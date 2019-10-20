@@ -1,4 +1,4 @@
-package com.example.hcbe_alerts
+package com.healersoft.hcbe_alerts
 
 import android.os.Bundle
 
