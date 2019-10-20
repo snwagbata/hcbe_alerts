@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1053554783343",
+    "firebase_url": "https://hcbe-alerts.firebaseio.com",
+    "project_id": "hcbe-alerts",
+    "storage_bucket": "hcbe-alerts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053554783343:android:11598f8cb8a5ea84b7499a",
+        "android_client_info": {
+          "package_name": "com.healersoft.hcbe_alerts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053554783343-m04uldjh2jd5iapu5a9fkale0nqj3aq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfCch7BkM6DIkiQRHQVpZdUCIOFMqbBIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053554783343-m04uldjh2jd5iapu5a9fkale0nqj3aq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
