@@ -1,5 +1,5 @@
 name: hcbe_alerts
-description: A new Flutter project.
+description: A new Flutter application.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -23,16 +23,17 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  #firebase and firestore dependencies
   firebase_core: ^0.4.0+1
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.12.9+4
   #flushbar for snackbar-like widget but more customizations
   flushbar: ^1.9.0
-  #util for responsize design
+  #util for responsive design
   flutter_screenutil: ^0.6.0
   #shared preferences for in-app settings
   shared_preferences: any
+  #autocomplete for registeration page
+  autocomplete_textfield: ^1.7.3
 
 dev_dependencies:
   flutter_test:

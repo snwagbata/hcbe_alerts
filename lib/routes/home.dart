@@ -7,7 +7,6 @@ import 'package:hcbe_alerts/routes/landing.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/drawer.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
-import 'package:hcbe_alerts/widgets/navigator.dart';
 
 class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();

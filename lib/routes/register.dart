@@ -20,7 +20,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  var _school;
+  dynamic _school;
   final TextEditingController _name = new TextEditingController();
   final TextEditingController _email = new TextEditingController();
   final TextEditingController _password = new TextEditingController();
@@ -61,8 +61,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
     ///School Input dropdown
     final school = StreamBuilder(
-      stream: Firestore.instance.collection('schools').orderBy('type').snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: Firestore.instance.collection('schools').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData)
           Center(
             child: const CupertinoActivityIndicator(),
