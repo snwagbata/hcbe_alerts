@@ -1,6 +1,48 @@
-# hcbe_alerts
-
+# HCBE Alerts
 A new Flutter application.
+
+#Project Tree
+
+├───android
+│   ├───app
+│   │   └───src
+│   │       ├───debug
+│   │       ├───main
+│   │       │   ├───kotlin
+│   │       │   │   └───com
+│   │       │   │       └───healersoft
+│   │       │   │           └───hcbe_alerts
+│   │       │   └───res
+│   │       │       ├───drawable
+│   │       │       ├───mipmap-hdpi
+│   │       │       ├───mipmap-mdpi
+│   │       │       ├───mipmap-xhdpi
+│   │       │       ├───mipmap-xxhdpi
+│   │       │       ├───mipmap-xxxhdpi
+│   │       │       └───values
+│   │       └───profile
+│   └───gradle
+│       └───wrapper
+├───assets
+├───ios
+│   ├───Flutter
+│   ├───Runner
+│   │   ├───Assets.xcassets
+│   │   │   ├───AppIcon.appiconset
+│   │   │   └───LaunchImage.imageset
+│   │   └───Base.lproj
+│   ├───Runner.xcodeproj
+│   │   ├───project.xcworkspace
+│   │   └───xcshareddata
+│   │       └───xcschemes
+│   └───Runner.xcworkspace
+├───lib
+│   ├───constants
+│   ├───models
+│   ├───routes
+│   ├───services
+│   └───widgets
+└───test
 
 ## Getting Started
 
