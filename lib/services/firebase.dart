@@ -47,6 +47,22 @@ class Auth {
     }
   }
 
+  static Future<bool> checkSchoolExist(String schoolId) async {
+    bool exists = false;
+    try {
+      await Firestore.instance.document("school/$schoolId").get().then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      print (e);
+      return false;
+    }
+  }
+
   static void _addSettings(Settings settings) async {
     Firestore.instance
         .document("settings/${settings.settingsId}")

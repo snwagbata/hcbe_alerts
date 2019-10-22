@@ -20,13 +20,14 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  dynamic _school;
   final TextEditingController _name = new TextEditingController();
   final TextEditingController _email = new TextEditingController();
   final TextEditingController _password = new TextEditingController();
+  final TextEditingController _school = new TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
+  final FocusNode _schoolFocus = FocusNode();
 
   _fieldFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
@@ -60,65 +61,26 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     ///School Input dropdown
-    final school = StreamBuilder(
-      stream: Firestore.instance.collection('schools').snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData)
-          Center(
-            child: const CupertinoActivityIndicator(),
-          );
-        return FormField(
-          builder: (FormFieldState state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 5.0),
-                  child: Icon(Icons.school),
-                ),
-                labelText: 'School',
-              ),
-              child: Container(
-                child: Row(
-                  children: <Widget>[
-                    DropdownButton<String>(
-                      hint: Text("Please select your school",
-                          style: TextStyle(fontSize: 15.0)),
-                      value: _school,
-                      isExpanded: false,
-                      isDense: true,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _school = newValue;
-                        });
-                      },
-                      items: snapshot.data != null
-                          ? snapshot.data.documents
-                              .map((DocumentSnapshot document) {
-                              return new DropdownMenuItem<String>(
-                                  value: document.documentID,
-                                  child: new Container(
-                                    height: 100.0,
-                                    //color: primaryColor,
-                                    child: new Text(
-                                      document.data['name'].toString(),
-                                    ),
-                                  ));
-                            }).toList()
-                          : DropdownMenuItem(
-                              value: 'null',
-                              child: new Container(
-                                height: 100.0,
-                                child: new Text('null'),
-                              ),
-                            ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
+    final school = TextFormField(
+      textInputAction: TextInputAction.next,
+      keyboardType: TextInputType.text,
+      autofocus: false,
+      controller: _school,
+      focusNode: _schoolFocus,
+      onFieldSubmitted: (term) {
+        _fieldFocusChange(context, _schoolFocus, _nameFocus);
       },
+      validator: Validator.validateSchool,
+      decoration: InputDecoration(
+        prefixIcon: Padding(
+          padding: EdgeInsets.only(left: 5.0),
+          child: Icon(
+            Icons.code,
+          ),
+        ),
+        labelText: 'School code',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      ),
     );
 
     final name = TextFormField(
@@ -140,7 +102,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ), // icon is 48px widget.
         labelText: 'Name',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
     );
 
@@ -167,7 +128,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ), // icon is 48px widget.
         labelText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
     );
 
@@ -194,7 +154,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ), // icon is 48px widget.
         labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
     );
 
@@ -208,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
               name: _name.text,
               email: _email.text,
               password: _password.text,
-              school: _school,
+              school: _school.text,
               context: context);
         },
         padding: EdgeInsets.all(12),
@@ -283,24 +242,32 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         SystemChannels.textInput.invokeMethod('TextInput.hide');
         await _changeLoadingVisible();
-        //need await so it has chance to go through error if found.
-        await Auth.signUp(email, password).then((uID) {
-          Auth.addUserSettingsDB(new User(
-            userId: uID,
-            email: email,
-            name: name,
-            school: school,
-            isSchoolAdmin: false,
-            isDistrictAdmin: false,
-          ));
+        //check if school code exists before procedding with sign up
+        await Auth.checkSchoolExist(school).then((exists) {
+          if (exists) {
+            //need await so it has chance to go through error if found.
+            Auth.signUp(email, password).then((uID) {
+              Auth.addUserSettingsDB(new User(
+                userId: uID,
+                email: email,
+                name: name,
+                school: school,
+                isSchoolAdmin: false,
+                isDistrictAdmin: false,
+              ));
+            });
+            Flushbar(
+              message: 'Account created',
+              duration: Duration(seconds: 3),
+              flushbarStyle: FlushbarStyle.FLOATING,
+              margin: EdgeInsets.all(8),
+              borderRadius: 5,
+            )..show(context);
+          }else{
+            
+          }
         });
-        Flushbar(
-          message: 'Account created',
-          duration: Duration(seconds: 3),
-          flushbarStyle: FlushbarStyle.FLOATING,
-          margin: EdgeInsets.all(8),
-          borderRadius: 5,
-        )..show(context);
+
         //now automatically login user too and go to homepage
         await StateWidget.of(context).logInUser(email, password, context);
         Navigator.pop(context);

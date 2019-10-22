@@ -45,6 +45,9 @@ ThemeData buildTheme() {
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: Colors.black),
       ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red),
+      ),
       labelStyle: const TextStyle(
         color: Colors.black,
       ),

@@ -293,7 +293,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
         labelText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
     );
 
@@ -320,7 +319,6 @@ class _LoginPageState extends State<LoginPage> {
         ), // icon is 48px widget.
         labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
     );
 

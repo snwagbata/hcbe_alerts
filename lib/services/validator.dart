@@ -1,4 +1,3 @@
-  
 class Validator {
   static String validateEmail(String value) {
     Pattern pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
@@ -28,8 +27,13 @@ class Validator {
   }
 
   static String validateSchool(String value) {
+    Pattern pattern = r'^.{6,}$';
+    RegExp regex = new RegExp(pattern);
     if (value.length == 0)
-      return 'Please select your school';
+      return 'Please enter your school code';
+    else if (!regex.hasMatch(value))
+      return 'School code must be at least 6 characters.';
+    else
       return null;
   }
 }
