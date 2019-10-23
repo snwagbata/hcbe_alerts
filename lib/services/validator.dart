@@ -1,3 +1,5 @@
+
+
 class Validator {
   static String validateEmail(String value) {
     Pattern pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
@@ -25,15 +27,14 @@ class Validator {
     else
       return null;
   }
-
+//check if school code exists before procedding with sign up
   static String validateSchool(String value) {
-    Pattern pattern = r'^.{6,}$';
+    Pattern pattern = r'^.{4,}$';
     RegExp regex = new RegExp(pattern);
     if (value.length == 0)
       return 'Please enter your school code';
     else if (!regex.hasMatch(value))
-      return 'School code must be at least 6 characters.';
-    else
-      return null;
+      return 'School code must be at least 4 characters.';
+    return null;
   }
 }

@@ -5,6 +5,7 @@ import 'package:hcbe_alerts/models/user.dart';
 import 'dart:async';
 //import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:hcbe_alerts/widgets/userException.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError, UnknownError }
@@ -12,7 +13,8 @@ enum authProblems { UserNotFound, PasswordNotValid, NetworkError, UnknownError }
 class Auth {
   static Future<String> signUp(String email, String password) async {
     final user = (await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password)).user;
+            .createUserWithEmailAndPassword(email: email, password: password))
+        .user;
     return user.uid;
   }
 
@@ -47,20 +49,10 @@ class Auth {
     }
   }
 
-  static Future<bool> checkSchoolExist(String schoolId) async {
-    bool exists = false;
-    try {
-      await Firestore.instance.document("school/$schoolId").get().then((doc) {
-        if (doc.exists)
-          exists = true;
-        else
-          exists = false;
-      });
-      return exists;
-    } catch (e) {
-      print (e);
-      return false;
-    }
+  static Future checkSchoolExist(String schoolId) async {
+    var doc = await Firestore.instance.document("school/$schoolId").get();
+    if (doc.exists) return true;
+    throw UserException(code: 'SCHOOL_CODE_INVALID');
   }
 
   static void _addSettings(Settings settings) async {
@@ -71,7 +63,8 @@ class Auth {
 
   static Future<String> signIn(String email, String password) async {
     final user = (await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password)).user;
+            .signInWithEmailAndPassword(email: email, password: password))
+        .user;
     return user.uid;
   }
 
@@ -166,6 +159,14 @@ class Auth {
           break;
         case 'The email address is already in use by another account.':
           return 'The email address is already in use by another account.';
+          break;
+        default:
+          return 'Unknown error occured.';
+      }
+    } else if (e is UserException) {
+      switch (e.code) {
+        case 'SCHOOL_CODE_INVALID':
+          return 'School code is invalid';
           break;
         default:
           return 'Unknown error occured.';

@@ -11,6 +11,7 @@ import 'package:hcbe_alerts/routes/login.dart';
 import 'package:hcbe_alerts/services/firebase.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/services/validator.dart';
+import 'package:hcbe_alerts/widgets/flushbar.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
 import 'package:hcbe_alerts/widgets/navigator.dart';
 
@@ -242,32 +243,25 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         SystemChannels.textInput.invokeMethod('TextInput.hide');
         await _changeLoadingVisible();
-        //check if school code exists before procedding with sign up
-        await Auth.checkSchoolExist(school).then((exists) {
-          if (exists) {
-            //need await so it has chance to go through error if found.
-            Auth.signUp(email, password).then((uID) {
-              Auth.addUserSettingsDB(new User(
-                userId: uID,
-                email: email,
-                name: name,
-                school: school,
-                isSchoolAdmin: false,
-                isDistrictAdmin: false,
-              ));
-            });
-            Flushbar(
-              message: 'Account created',
-              duration: Duration(seconds: 3),
-              flushbarStyle: FlushbarStyle.FLOATING,
-              margin: EdgeInsets.all(8),
-              borderRadius: 5,
-            )..show(context);
-          }else{
-            
-          }
+          await Auth.checkSchoolExist(school);
+        //need await so it has chance to go through error if found.
+        await Auth.signUp(email, password).then((uID) {
+          Auth.addUserSettingsDB(new User(
+            userId: uID,
+            email: email,
+            name: name,
+            school: school,
+            isSchoolAdmin: false,
+            isDistrictAdmin: false,
+          ));
         });
-
+        Flushbar(
+          message: 'Account created',
+          duration: Duration(seconds: 3),
+          flushbarStyle: FlushbarStyle.FLOATING,
+          margin: EdgeInsets.all(8),
+          borderRadius: 5,
+        )..show(context);
         //now automatically login user too and go to homepage
         await StateWidget.of(context).logInUser(email, password, context);
         Navigator.pop(context);
