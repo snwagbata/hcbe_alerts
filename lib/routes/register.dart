@@ -251,8 +251,7 @@ class _RegisterPageState extends State<RegisterPage> {
             email: email,
             name: name,
             school: school,
-            isSchoolAdmin: false,
-            isDistrictAdmin: false,
+            userType: 'teacher',
           ));
         });
         Flushbar(
