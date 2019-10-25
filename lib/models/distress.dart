@@ -7,11 +7,12 @@ class Distress {
   Distress({
     @required this.active,
     @required this.distressId,
+    @required this.distressType,
     @required this.schoolId,
-    @required this.distressCode,
-    @required this.position,
+    @required this.location,
     this.message,
-  }) : assert(schoolId != null && distressCode != null);
+    @required this.time,
+  }) : assert(schoolId != null && distressType != null);
 
   /// Status of the alert
   final bool active;
@@ -23,15 +24,16 @@ class Distress {
   final String schoolId;
 
   /// Distress type, ex: red, yellow.
-  final String distressCode;
+  final String distressType;
 
   /// A message to explain situation, possibly null.
   final String message;
 
   /// Device location of user
-  final dynamic position;
+  final dynamic location;
 
-
+  /// Current time
+  final var time; //= new DateTime.now(); <--- Call that when implementing it in home screen
   @override
   String toString() => 'Distress($schoolId, $message,)';
 }
