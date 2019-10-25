@@ -33,7 +33,7 @@ class Distress {
   final dynamic location;
 
   /// Current time
-  final var time; //= new DateTime.now(); <--- Call that when implementing it in home screen
+  final dynamic time; //= new DateTime.now(); <--- Call that when implementing it in home screen
   @override
   String toString() => 'Distress($schoolId, $message,)';
 }
