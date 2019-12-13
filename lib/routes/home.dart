@@ -36,21 +36,25 @@ class _HomePageState extends State<HomePage> {
       final userType = appState?.user?.name ?? '';
       
       
-      final logo = Hero(
+      final codeGreen = Hero(
       tag: 'hero',
       child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          radius: 60.0,
+          radius: 90.0,
           child: ClipOval(
             child: Image.asset(
-              'assets/logo.png',
+              'assets/code_red.png',
               fit: BoxFit.cover,
-              width: 120.0,
-              height: 120.0,
+              width: 160.0,
+              height: 160.0,
             ),
           )),
     );
 
+    final activeIntruder = RaisedButton(onPressed: () {}, padding: EdgeInsets.symmetric(vertical: 12) , color: Colors.grey, child: Text("Active Intruder"),);
+    final codeRed = RaisedButton(onPressed: () {}, padding: EdgeInsets.symmetric(vertical: 12) , color: Colors.red, child: Text("Code Red"),);
+    final codeYellow = RaisedButton(onPressed: () {}, padding: EdgeInsets.symmetric(vertical: 12) , color: Colors.yellow, child: Text("Code Yellow"),);
+    final codeBlue = RaisedButton(onPressed: () {}, padding: EdgeInsets.symmetric(vertical: 12) , color: Colors.blue, child: Text("Code Blue"),);
 //check for null https://stackoverflow.com/questions/49775261/check-null-in-ternary-operation
     final userId = appState?.firebaseUserAuth?.uid ?? '';
     final email = appState?.firebaseUserAuth?.email ?? '';
@@ -60,12 +64,13 @@ class _HomePageState extends State<HomePage> {
     final emailLabel = Text('Email: ');
     final nameLabel = Text('Name: ');
     final settingsIdLabel = Text('SetttingsId: ');
+    final schoolName = Text('Houston County High School', style: Theme.of(context).textTheme.title.copyWith(fontSize: 24,),);
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 5.0,
-        title: Text('HCBE Alerts'),
+       // title: Text('HCBE Alerts'),
         actions: <Widget>[
           IconButton(
             icon: Platform.isIOS
@@ -85,31 +90,28 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       body: LoadingScreen(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48.0),
-            child: Center(
-              child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+            child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                 
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    logo,
-                    SizedBox(height: 48.0),
-                    userIdLabel,
-                    Text(userId, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Center(child: schoolName),
                     SizedBox(height: 12.0),
-                    emailLabel,
-                    Text(email, style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(height: 12.0),
-                    nameLabel,
-                    Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(height: 12.0),
-                    settingsIdLabel,
-                    Text(settingsId,
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    codeGreen,
+                    Center( child: Text("Currently active: Code Red", style: TextStyle(fontWeight: FontWeight.bold))),
+                    SizedBox(height: 10.0),
+                    activeIntruder,
+                    SizedBox(height: 10.0),
+                    codeRed,
+                    SizedBox(height: 10.0),
+                    codeYellow,
+                    SizedBox(height: 10.0),
+                    codeBlue,
                   ],
                 ),
               ),
-            ),
+          
           ),
           inAsyncCall: _loadingVisible),
     );

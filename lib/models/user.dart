@@ -21,6 +21,7 @@ class User {
   String email;
   String school;
   String userType;
+  
 
   User({
     this.userId,

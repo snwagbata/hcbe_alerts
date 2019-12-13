@@ -6,6 +6,7 @@ import 'package:hcbe_alerts/routes/home.dart';
 import 'package:hcbe_alerts/routes/landing.dart';
 import 'package:hcbe_alerts/routes/login.dart';
 import 'package:hcbe_alerts/routes/register.dart';
+import 'package:hcbe_alerts/routes/root.dart';
 import 'package:hcbe_alerts/routes/settings.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (context) => HomePage(),
+        '/': (context) => Root(),
         '/settings': (context) => SettingsPage(),
         '/landing': (context) => LandingPage(),
         '/signin': (context) => LoginPage(),
