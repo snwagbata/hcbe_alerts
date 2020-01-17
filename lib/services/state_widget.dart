@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hcbe_alerts/models/distress.dart';
 import 'package:hcbe_alerts/models/settings.dart';
 import 'package:hcbe_alerts/models/state.dart';
 import 'package:hcbe_alerts/models/user.dart';
+import 'package:hcbe_alerts/services/alerts.dart';
 import 'package:hcbe_alerts/services/firebase.dart';
 
 class StateWidget extends StatefulWidget {
@@ -26,6 +28,7 @@ class StateWidget extends StatefulWidget {
 
   @override
   _StateWidgetState createState() => new _StateWidgetState();
+
 }
 
 class _StateWidgetState extends State<StateWidget> {
@@ -62,6 +65,7 @@ class _StateWidgetState extends State<StateWidget> {
     FirebaseUser firebaseUserAuth = await Auth.getCurrentFirebaseUser();
     setState(() {
       state.user = null;
+      state.distress = null;
       state.settings = null;
       state.firebaseUserAuth = firebaseUserAuth;
     });
@@ -76,6 +80,7 @@ class _StateWidgetState extends State<StateWidget> {
     await initUser();
     Navigator.pop(context);
   }
+
 
   @override
   Widget build(BuildContext context) {

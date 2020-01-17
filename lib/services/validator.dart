@@ -2,10 +2,10 @@
 
 class Validator {
   static String validateEmail(String value) {
-    Pattern pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+    Pattern pattern = r'^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(hcbe)\.net$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return 'Please enter a valid email address.';
+      return 'Please enter a valid HCBE  email address.';
     else
       return null;
   }

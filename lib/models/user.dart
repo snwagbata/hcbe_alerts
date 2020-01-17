@@ -50,4 +50,14 @@ class User {
   factory User.fromDocument(DocumentSnapshot doc) {
     return User.fromJson(doc.data);
   }
+
+  String getUserId()
+  {
+    return this.userId;
+  }
+
+  String userSchoolId()
+  {
+    return this.school;
+  }
 }

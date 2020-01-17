@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hcbe_alerts/models/state.dart';
+import 'package:hcbe_alerts/services/alerts.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/drawer.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
@@ -14,6 +16,9 @@ class DefaultPage extends StatefulWidget {
 class _DefaultPageState extends State<DefaultPage> {
   StateModel appState;
   bool _loadingVisible = false;
+  String _currentCode = "";
+  String _currentCodeImg = "";
+  String _currentSchoolName = "";
 
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
@@ -22,16 +27,24 @@ class _DefaultPageState extends State<DefaultPage> {
     } else {
       _loadingVisible = false;
     }
-    final userType = appState?.user?.name ?? '';
 
-    final codeGreen = Hero(
+    final schoolId = appState?.user?.school ?? '';
+
+    setState(() async {
+      _currentCode = await Alerts.getCurrentAlertName(schoolId);
+      _currentCodeImg = await Alerts.getAlertImgPath(schoolId);
+      var doc = await Firestore.instance.document("schools/$schoolId").get();
+      _currentSchoolName = doc.data["schoolAlertState"];
+    });
+
+    final codeImage = Hero(
       tag: 'hero',
       child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 90.0,
           child: ClipOval(
             child: Image.asset(
-              'assets/code_red.png',
+              _currentCodeImg,
               fit: BoxFit.cover,
               width: 160.0,
               height: 160.0,
@@ -58,22 +71,16 @@ class _DefaultPageState extends State<DefaultPage> {
       child: Text("Code Yellow"),
     );
     final codeBlue = RaisedButton(
-      onPressed: () {},
+      onPressed: () {
+        Alerts.fire("blue");
+      },
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.blue,
       child: Text("Code Blue"),
     );
-//check for null https://stackoverflow.com/questions/49775261/check-null-in-ternary-operation
-    final userId = appState?.firebaseUserAuth?.uid ?? '';
-    final email = appState?.firebaseUserAuth?.email ?? '';
-    final name = appState?.user?.name ?? '';
-    final settingsId = appState?.settings?.settingsId ?? '';
-    final userIdLabel = Text('App Id: ');
-    final emailLabel = Text('Email: ');
-    final nameLabel = Text('Name: ');
-    final settingsIdLabel = Text('SetttingsId: ');
+
     final schoolName = Text(
-      'Houston County High School',
+      _currentSchoolName,
       style: Theme.of(context).textTheme.title.copyWith(
             fontSize: 24,
           ),
@@ -111,9 +118,9 @@ class _DefaultPageState extends State<DefaultPage> {
                 children: <Widget>[
                   Center(child: schoolName),
                   SizedBox(height: 12.0),
-                  codeGreen,
+                  codeImage,
                   Center(
-                      child: Text("Currently active: Code Red",
+                      child: Text("Currently active: " + _currentCode,
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   SizedBox(height: 10.0),
                   activeIntruder,
