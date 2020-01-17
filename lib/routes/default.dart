@@ -17,40 +17,18 @@ class _DefaultPageState extends State<DefaultPage> {
   StateModel appState;
   bool _loadingVisible = false;
   String _currentCode = "";
-  String _currentCodeImg = "";
+  String _currentCodeImg = "assets/code_green.png";
   String _currentSchoolName = "";
 
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
+    final schoolId = appState?.user?.school ?? '';
+
     if (appState.isLoading) {
       _loadingVisible = true;
     } else {
       _loadingVisible = false;
     }
-
-    final schoolId = appState?.user?.school ?? '';
-
-    setState(() async {
-      _currentCode = await Alerts.getCurrentAlertName(schoolId);
-      _currentCodeImg = await Alerts.getAlertImgPath(schoolId);
-      var doc = await Firestore.instance.document("schools/$schoolId").get();
-      _currentSchoolName = doc.data["schoolAlertState"];
-    });
-
-    final codeImage = Hero(
-      tag: 'hero',
-      child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 90.0,
-          child: ClipOval(
-            child: Image.asset(
-              _currentCodeImg,
-              fit: BoxFit.cover,
-              width: 160.0,
-              height: 160.0,
-            ),
-          )),
-    );
 
     final activeIntruder = RaisedButton(
       onPressed: () {},
@@ -79,12 +57,49 @@ class _DefaultPageState extends State<DefaultPage> {
       child: Text("Code Blue"),
     );
 
-    final schoolName = Text(
-      _currentSchoolName,
-      style: Theme.of(context).textTheme.title.copyWith(
-            fontSize: 24,
-          ),
-    );
+    build() {
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Center(
+              child: Text(
+                _currentSchoolName,
+                style: Theme.of(context).textTheme.title.copyWith(
+                      fontSize: 24,
+                    ),
+              ),
+            ),
+            SizedBox(height: 12.0),
+            Hero(
+              tag: 'hero',
+              child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 90.0,
+                  child: ClipOval(
+                    child: Image.asset(
+                      _currentCodeImg,
+                      fit: BoxFit.cover,
+                      width: 160.0,
+                      height: 160.0,
+                    ),
+                  )),
+            ),
+            Center(
+                child: Text("Currently active: " + _currentCode,
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            SizedBox(height: 10.0),
+            activeIntruder,
+            SizedBox(height: 10.0),
+            codeRed,
+            SizedBox(height: 10.0),
+            codeYellow,
+            SizedBox(height: 10.0),
+            codeBlue,
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -110,30 +125,47 @@ class _DefaultPageState extends State<DefaultPage> {
       backgroundColor: Colors.white,
       body: LoadingScreen(
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Center(child: schoolName),
-                  SizedBox(height: 12.0),
-                  codeImage,
-                  Center(
-                      child: Text("Currently active: " + _currentCode,
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  SizedBox(height: 10.0),
-                  activeIntruder,
-                  SizedBox(height: 10.0),
-                  codeRed,
-                  SizedBox(height: 10.0),
-                  codeYellow,
-                  SizedBox(height: 10.0),
-                  codeBlue,
-                ],
-              ),
-            ),
-          ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              child: StreamBuilder(
+                stream: Firestore.instance
+                    .collection('schools')
+                    .document(schoolId)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return LinearProgressIndicator();
+                  }
+                  var doc = snapshot.data;
+
+                  switch (doc["schoolAlertState"]) {
+                    case "red":
+                      _currentCodeImg = 'assets/code_red.png';
+                      break;
+                    default:
+                  }
+
+                  switch (doc["schoolAlertState"]) {
+                    case "red":
+                      _currentCode = "Code Red";
+                      break;
+                    case "blue":
+                      _currentCode = "Code Blue";
+                      break;
+                    case "intruder":
+                      _currentCode = "Active Intruder";
+                      break;
+                    case "yellow":
+                      _currentCode = "Code Yellow";
+                      break;
+                    default:
+                      _currentCode = "Code Green";
+                  }
+                  _currentSchoolName = doc["name"];
+
+                  return build();
+                },
+              )),
           inAsyncCall: _loadingVisible),
     );
   }
