@@ -143,6 +143,7 @@ class _DefaultPageState extends State<DefaultPage> {
                       _currentCodeImg = 'assets/code_red.png';
                       break;
                     default:
+                    _currentCodeImg = 'assets/code_green.png';
                   }
 
                   switch (doc["schoolAlertState"]) {
