@@ -36,8 +36,13 @@ class Alerts {
   }
 
   static checkActiveAlerts() {}
-  static void fire(String alertType) {}
 
+  /// fire() method will get `String schoolId` and change alert type of school based on `String alertType`
+  /// 
+  static void fire(String schoolId, String alertType) {}
+
+  /// Updates current active alert with message. Only works when current school alert is not `green`
+  /// 
   static void updateAlert(String message) {}
 
   static Future<String> getAlertImgPath(String schoolId) async {
