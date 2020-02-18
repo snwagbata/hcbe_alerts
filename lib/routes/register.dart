@@ -255,7 +255,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ));
         });
         Flushbar(
-          message: 'Account created',
+          message: 'Account created. User verification email sent',
           duration: Duration(seconds: 3),
           flushbarStyle: FlushbarStyle.FLOATING,
           margin: EdgeInsets.all(8),
