@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hcbe_alerts/models/state.dart';
 import 'package:hcbe_alerts/services/alerts.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
+import 'package:hcbe_alerts/widgets/alert_dialog.dart';
 import 'package:hcbe_alerts/widgets/drawer.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
 
@@ -31,27 +32,25 @@ class _DefaultPageState extends State<DefaultPage> {
     }
 
     final activeIntruder = RaisedButton(
-      onPressed: () {},
+      onPressed: displayDialog(context, "Active Intruder", "intruder", schoolId, Colors.grey),
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.grey,
       child: Text("Active Intruder"),
     );
     final codeRed = RaisedButton(
-      onPressed: () {},
+      onPressed: displayDialog(context, "Code Red", "red", schoolId, Colors.red),
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.red,
       child: Text("Code Red"),
     );
     final codeYellow = RaisedButton(
-      onPressed: () {},
+      onPressed: displayDialog(context, "Code Yellow", "yellow", schoolId, Colors.yellowAccent),
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.yellow,
       child: Text("Code Yellow"),
     );
     final codeBlue = RaisedButton(
-      onPressed: () {
-        Alerts.fire("blue");
-      },
+      onPressed: displayDialog(context, "Code Blue", "blue", schoolId, Colors.blue),
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.blue,
       child: Text("Code Blue"),
@@ -143,7 +142,7 @@ class _DefaultPageState extends State<DefaultPage> {
                       _currentCodeImg = 'assets/code_red.png';
                       break;
                     default:
-                    _currentCodeImg = 'assets/code_green.png';
+                      _currentCodeImg = 'assets/code_green.png';
                   }
 
                   switch (doc["schoolAlertState"]) {
@@ -168,6 +167,17 @@ class _DefaultPageState extends State<DefaultPage> {
                 },
               )),
           inAsyncCall: _loadingVisible),
+    );
+  }
+
+  displayDialog(BuildContext context, String title, String alert,
+      String schoolId, Color color) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DistressDialog(
+            title: title, alert: alert, schoolId: schoolId, color: color);
+      },
     );
   }
 
