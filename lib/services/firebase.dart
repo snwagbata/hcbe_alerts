@@ -15,6 +15,7 @@ class Auth {
     final user = (await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password))
         .user;
+    user.sendEmailVerification();
     return user.uid;
   }
 
@@ -65,7 +66,11 @@ class Auth {
     final user = (await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password))
         .user;
+        if(user.isEmailVerified)
+        {
     return user.uid;
+        }
+        throw UserException(code: "UNVERIFIED_EMAIL");
   }
 
   static Future<User> getUserFirestore(String userId) async {
@@ -167,6 +172,9 @@ class Auth {
       switch (e.code) {
         case 'SCHOOL_CODE_INVALID':
           return 'School code is invalid';
+          break;
+        case 'UNVERIFIED_EMAIL':
+          return 'Please verify your email to sign in';
           break;
         default:
           return 'Unknown error occured.';

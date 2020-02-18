@@ -38,8 +38,10 @@ class Alerts {
   static checkActiveAlerts() {}
 
   /// fire() method will get `String schoolId` and change alert type of school based on `String alertType`
-  /// 
-  static void fire(String schoolId, String alertType) {}
+  /// update db based on schoolId first
+  /// then get location and everything required to create an alert object
+  /// create alert object then create new alert under alert collection in db
+  static fire(String schoolId, String alertType) {}
 
   /// Updates current active alert with message. Only works when current school alert is not `green`
   /// 
