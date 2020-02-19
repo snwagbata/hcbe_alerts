@@ -32,25 +32,25 @@ class _DefaultPageState extends State<DefaultPage> {
     }
 
     final activeIntruder = RaisedButton(
-      onPressed: displayDialog(context, "Active Intruder", "intruder", schoolId, Colors.grey),
+      onPressed: () {displayDialog(context, "Active Intruder", "intruder", schoolId, Colors.grey);},
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.grey,
       child: Text("Active Intruder"),
     );
     final codeRed = RaisedButton(
-      onPressed: displayDialog(context, "Code Red", "red", schoolId, Colors.red),
+      onPressed: () {displayDialog(context, "Code Red", "red", schoolId, Colors.red);},
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.red,
       child: Text("Code Red"),
     );
     final codeYellow = RaisedButton(
-      onPressed: displayDialog(context, "Code Yellow", "yellow", schoolId, Colors.yellowAccent),
+      onPressed: () {displayDialog(context, "Code Yellow", "yellow", schoolId, Colors.yellowAccent);},
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.yellow,
       child: Text("Code Yellow"),
     );
     final codeBlue = RaisedButton(
-      onPressed: displayDialog(context, "Code Blue", "blue", schoolId, Colors.blue),
+      onPressed: () {displayDialog(context, "Code Blue", "blue", schoolId, Colors.blue);},
       padding: EdgeInsets.symmetric(vertical: 12),
       color: Colors.blue,
       child: Text("Code Blue"),
