@@ -81,7 +81,7 @@ class DistressDialog extends StatelessWidget {
                       child: Text("Cancel"),
                     ),
                     FlatButton(
-                        onPressed: Alerts.fire(schoolId, alert),
+                        onPressed: () {Alerts.fire(schoolId, alert);},
                         child: Text(
                             "Initiate")) //TODO Get message from alert message and pass to Alerts.fire()
                   ],
