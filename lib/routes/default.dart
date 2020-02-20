@@ -67,6 +67,7 @@ class _DefaultPageState extends State<DefaultPage> {
                 style: Theme.of(context).textTheme.title.copyWith(
                       fontSize: 24,
                     ),
+                textAlign: TextAlign.center,
               ),
             ),
             SizedBox(height: 12.0),
