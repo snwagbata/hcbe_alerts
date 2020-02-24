@@ -60,6 +60,9 @@ class PlatformAlertDialog extends PlatformWidget {
       title: Text(title),
       content: Text(content),
       actions: _buildActions(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
     );
   }
 
