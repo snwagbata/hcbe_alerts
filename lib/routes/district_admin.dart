@@ -6,6 +6,7 @@ import 'package:hcbe_alerts/models/state.dart';
 import 'package:hcbe_alerts/services/firebase.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/drawer.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 class DistrictAdminPage extends StatefulWidget {
   @override
@@ -14,11 +15,9 @@ class DistrictAdminPage extends StatefulWidget {
 
 class _DistrictAdminPageState extends State<DistrictAdminPage> {
   StateModel appState;
+  PermissionStatus _status;
   bool _loadingVisible = false;
-  @override
-  void initState() {
-    super.initState();
-  }
+  
 
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
@@ -49,5 +48,32 @@ class _DistrictAdminPageState extends State<DistrictAdminPage> {
       ),
       drawer: NavDrawer(),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    LocationPermissions().checkPermissionStatus().then(_updateStatus);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _askPermission());
+  }
+
+  void _updateStatus(PermissionStatus status) {
+    if (status != _status) {
+      setState(() {
+        _status = status;
+      });
+    }
+  }
+
+  void _askPermission() async {
+    await LocationPermissions().requestPermissions().then(_onStatusRequested);
+  }
+
+  void _onStatusRequested(PermissionStatus value) {
+    if (value != PermissionStatus.granted) {
+      LocationPermissions().openAppSettings();
+    } else {
+      _updateStatus(value);
+    }
   }
 }
