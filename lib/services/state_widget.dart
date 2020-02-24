@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hcbe_alerts/models/distress.dart';
 import 'package:hcbe_alerts/models/settings.dart';
 import 'package:hcbe_alerts/models/state.dart';
 import 'package:hcbe_alerts/models/user.dart';
-import 'package:hcbe_alerts/services/alerts.dart';
 import 'package:hcbe_alerts/services/firebase.dart';
+import 'package:hcbe_alerts/services/location.dart';
 
 class StateWidget extends StatefulWidget {
   final StateModel state;
@@ -28,7 +27,6 @@ class StateWidget extends StatefulWidget {
 
   @override
   _StateWidgetState createState() => new _StateWidgetState();
-
 }
 
 class _StateWidgetState extends State<StateWidget> {
@@ -79,8 +77,9 @@ class _StateWidgetState extends State<StateWidget> {
     await Auth.storeSettingsLocal(settings);
     await initUser();
     Navigator.pop(context);
+    // Delay 2 seconds and then ask for permissions
+    Future.delayed(Duration(seconds: 3), LocationInit.initLocation());
   }
-
 
   @override
   Widget build(BuildContext context) {
