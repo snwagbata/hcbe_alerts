@@ -31,12 +31,16 @@ dependencies:
   flushbar: ^1.9.0
   #util for responsive design
   flutter_screenutil: ^0.6.0
+  #location permission handler
+  location_permissions: ^2.0.4+1
   #shared preferences for in-app settings
   shared_preferences: any
   #autocomplete for registeration page
   autocomplete_textfield: ^1.7.3
   #location package
   location: ^2.3.5
+  #text resize flutter
+  auto_size_text: ^2.1.0
 
 dev_dependencies:
   flutter_test:
