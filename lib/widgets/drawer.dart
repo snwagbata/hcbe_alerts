@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 class NavDrawer extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
     try {
+      bar("Signed out", 2, context);
       StateWidget.of(context).logOutUser();
     } on PlatformException {
       bar('Sign Out failed', 5, context);
