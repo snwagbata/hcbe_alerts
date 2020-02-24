@@ -5,20 +5,24 @@ ThemeData buildTheme() {
   // in this method:
   TextTheme _buildTextTheme(TextTheme base) {
     return base.copyWith(
-        headline: base.headline.copyWith(
-          fontFamily: 'Merriweather',
-          fontSize: 40.0,
-          color: const Color(0xFF555555),
-        ),
-        title: base.title.copyWith(
-          fontFamily: 'Merriweather',
-          fontSize: 15.0,
-          color: const Color(0xFF555555),
-        ),
-        caption: base.caption.copyWith(
-          color: const Color(0xFF555555),
-        ),
-        body1: base.body1.copyWith(color: const Color(0xFF555555)));
+      headline: base.headline.copyWith(
+        fontFamily: 'Merriweather',
+        fontSize: 40.0,
+        color: const Color(0xFF555555),
+      ),
+      title: base.title.copyWith(
+        fontFamily: 'Merriweather',
+        fontSize: 14.0,
+        color: const Color(0xFF555555),
+      ),
+      caption: base.caption.copyWith(
+        color: const Color(0xFF555555),
+      ),
+      body1: base.body1.copyWith(
+        fontSize: 12.0,
+        color: const Color(0xFF555555),
+      ),
+    );
   }
 
   // We want to override a default light blue theme.
