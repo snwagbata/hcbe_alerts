@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
       onFieldSubmitted: (term) {
         _fieldFocusChange(context, _emailFocus, _passFocus);
       },
-      validator: Validator.validateEmail,
+      //validator: Validator.validateEmail, TODO uncomment this when checking todos
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
@@ -261,8 +261,6 @@ class _RegisterPageState extends State<RegisterPage> {
           margin: EdgeInsets.all(8),
           borderRadius: 5,
         )..show(context);
-        //now automatically login user too and go to homepage
-        await StateWidget.of(context).logInUser(email, password, context);
         Navigator.pop(context);
       } catch (e) {
         _changeLoadingVisible();

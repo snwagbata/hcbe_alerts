@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
       onFieldSubmitted: (term) {
         _fieldFocusChange(context, _emailFocus, _passFocus);
       },
-      validator: Validator.validateEmail,
+      //validator: Validator.validateEmail, TODO uncomment this when checking todos
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
