@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final FocusNode _passFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _schoolFocus = FocusNode();
+  final FirebaseMessaging _fcm = FirebaseMessaging();
 
   _fieldFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
@@ -262,6 +264,7 @@ class _RegisterPageState extends State<RegisterPage> {
           borderRadius: 5,
         )..show(context);
         Navigator.pop(context);
+        _fcm.subscribeToTopic(school);
       } catch (e) {
         _changeLoadingVisible();
         print("Sign Up Error: $e");

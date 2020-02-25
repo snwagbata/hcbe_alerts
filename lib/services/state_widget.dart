@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,6 +81,10 @@ class _StateWidgetState extends State<StateWidget> {
     Navigator.pop(context);
     // Delay 2 seconds and then ask for permissions
     Future.delayed(Duration(seconds: 3), LocationInit.initLocation());
+    if (Platform.isIOS) {
+      FirebaseMessaging()
+          .requestNotificationPermissions(IosNotificationSettings());
+    }
   }
 
   @override

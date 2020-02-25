@@ -50,7 +50,7 @@ class Auth {
     }
   }
 
-  static Future checkSchoolExist(String schoolId) async {
+  static Future<bool> checkSchoolExist(String schoolId) async {
     var doc = await Firestore.instance.document("schools/$schoolId").get();
     if (doc.exists) return true;
     throw UserException(code: 'SCHOOL_CODE_INVALID');
