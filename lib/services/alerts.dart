@@ -85,7 +85,6 @@ class Alerts {
 
   /// Get location, return null if access denied
   static Future<GeoPoint> _getLocation() async {
-    //TODO: create new alert in db with loc off
     Location location = new Location();
     var pos = await location.getLocation();
     GeoPoint _curLoc;

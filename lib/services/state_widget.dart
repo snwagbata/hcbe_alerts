@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,8 +34,6 @@ class StateWidget extends StatefulWidget {
 
 class _StateWidgetState extends State<StateWidget> {
   StateModel state;
-  //GoogleSignInAccount googleAccount;
-  //final GoogleSignIn googleSignIn = new GoogleSignIn();
 
   @override
   void initState() {
@@ -45,6 +44,57 @@ class _StateWidgetState extends State<StateWidget> {
       state = new StateModel(isLoading: true);
       initUser();
     }
+
+    //FCM callback configurations
+    FirebaseMessaging().configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        if (Platform.isIOS) {
+          showDialog(
+            context: context,
+            builder: (context) => CupertinoAlertDialog(
+              content: ListTile(
+                title: Text(message['notification']['title']),
+                subtitle: Text(message['notification']['body']),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+              content: ListTile(
+                title: Text(message['notification']['title']),
+                subtitle: Text(message['notification']['body']),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // TODO optional
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // TODO optional
+      },
+    );
   }
 
   Future<Null> initUser() async {
@@ -82,8 +132,12 @@ class _StateWidgetState extends State<StateWidget> {
     // Delay 2 seconds and then ask for permissions
     Future.delayed(Duration(seconds: 3), LocationInit.initLocation());
     if (Platform.isIOS) {
+      String schoolId = user?.userSchoolId();
       FirebaseMessaging()
           .requestNotificationPermissions(IosNotificationSettings());
+      FirebaseMessaging().onIosSettingsRegistered.listen((data) {
+        FirebaseMessaging().subscribeToTopic(schoolId);
+      });
     }
   }
 

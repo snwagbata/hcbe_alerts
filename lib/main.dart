@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hcbe_alerts/constants/theme.dart';
 import 'package:hcbe_alerts/routes/forgot_password.dart';
-import 'package:hcbe_alerts/routes/home.dart';
 import 'package:hcbe_alerts/routes/landing.dart';
 import 'package:hcbe_alerts/routes/login.dart';
 import 'package:hcbe_alerts/routes/register.dart';
