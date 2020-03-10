@@ -22,6 +22,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'HCBE Alerts',
       theme: buildTheme(),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        accentColor: Colors.deepPurple,
+        brightness: Brightness.dark,
+      ),
       //onGenerateRoute: Navigation.router.generator,
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
