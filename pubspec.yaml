@@ -42,6 +42,10 @@ dependencies:
   location: ^2.3.5
   #text resize flutter 
   auto_size_text: ^2.1.0
+  #settings ui
+  settings_ui: ^0.2.0
+  #app settings locator
+  app_settings: ^3.0.1
 
 dev_dependencies:
   flutter_test:
