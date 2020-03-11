@@ -4,12 +4,13 @@ import * as admin from 'firebase-admin';
 admin.initializeApp();
 
 const fcm = admin.messaging();
+const db = admin.firestore();
 
 export const sendToTopic = functions.firestore
   .document('alerts/{alertId}')
   .onCreate(async (snapshot) => {
     const alert = snapshot.data();
-    
+
     let alertType = alert?.alertType;
     let schoolId = alert?.schoolId;
     let alertName;
@@ -47,4 +48,34 @@ export const sendToTopic = functions.firestore
     };
 
     return fcm.sendToTopic(schoolId, payload);
+  });
+
+/**
+ * Will get the school id of a school where an alert in triggered and send
+ * an alert to users who have opted in to receiving text alerts from the school
+ */
+export const sendTextNotif = functions.firestore
+  .document('alerts/{alertId}')
+  .onCreate(async (snapshot) => {
+    //get schoolId
+    const alert = snapshot.data();
+    let schoolId = alert?.schoolId;
+    let TextAlertsUserNumbers: number[];
+
+
+    db.collection('users').where('schoolId', '==', schoolId).where('TextAlertsOptIn', '==', true).get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          TextAlertsUserNumbers.push
+          console.log(doc.id, '=>', doc.data());
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+
   });
