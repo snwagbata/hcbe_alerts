@@ -32,7 +32,7 @@ ThemeData buildTheme() {
   return base.copyWith(
     textTheme: _buildTextTheme(base.textTheme),
     primaryColor: const Color(0xff00457c),
-    accentColor: const Color(0xFFFFFFFF),
+    accentColor: const Color(0xff006fc7),
     iconTheme: IconThemeData(
       color: const Color(0xFFCCCCCC),
       size: 20.0,
@@ -93,7 +93,7 @@ ThemeData buildDarkTheme() {
     primaryColor: const Color(0xff00457c),
     accentColor: const Color(0xFFFFFFFF),
     iconTheme: IconThemeData(
-      color: const Color(0xFFCCCCCC),
+      color: const Color(0xfff5f5f5),
       size: 20.0,
     ),
     buttonColor: Colors.white,
