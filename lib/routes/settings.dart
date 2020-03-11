@@ -14,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   StateModel appState;
+  bool textAlertsEnabled = false;
   @override
   void initState() {
     super.initState();
@@ -28,25 +29,25 @@ class _SettingsPageState extends State<SettingsPage> {
       return LandingPage();
     } else {
       Future<void> _signOut(BuildContext context) async {
-    try {
-      bar("Signed out", 2, context);
-      StateWidget.of(context).logOutUser();
-    } on PlatformException {
-      bar('Sign Out failed', 5, context);
-    }
-  }
+        try {
+          bar("Signed out", 2, context);
+          StateWidget.of(context).logOutUser();
+        } on PlatformException {
+          bar('Sign Out failed', 5, context);
+        }
+      }
 
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final bool didRequestSignOut = await PlatformAlertDialog(
-      title: 'Sign Out',
-      content: 'Are you sure you want to sign out?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Sign Out',
-    ).show(context);
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
+      Future<void> _confirmSignOut(BuildContext context) async {
+        final bool didRequestSignOut = await PlatformAlertDialog(
+          title: 'Sign Out',
+          content: 'Are you sure you want to sign out?',
+          cancelActionText: 'Cancel',
+          defaultActionText: 'Sign Out',
+        ).show(context);
+        if (didRequestSignOut == true) {
+          _signOut(context);
+        }
+      }
 
       return Scaffold(
         appBar: AppBar(
@@ -55,11 +56,11 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: SafeArea(
           child: SettingsList(
-        sections: [
-          SettingsSection(
-            title: 'Common',
-            tiles: [
-              /*SettingsTile(
+            sections: [
+              SettingsSection(
+                title: 'Common',
+                tiles: [
+                  /*SettingsTile(
                 title: 'Language',
                 subtitle: 'English',
                 leading: Icon(Icons.language),  will implement spanish later
@@ -67,43 +68,61 @@ class _SettingsPageState extends State<SettingsPage> {
                   Navigator.of(context);
                 },
               ),*/
-            ],
-          ),
-          SettingsSection(
-            title: 'Account',
-            tiles: [
-              SettingsTile(title: 'Email', leading: Icon(Icons.email)),
-              SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app), onTap: () {_confirmSignOut(context);},),
-            ],
-          ),
-          SettingsSection(
-            title: 'Security',
-            tiles: [
-              SettingsTile(
-                title: 'Location permission',
-                leading: Icon(Icons.lock),
-                onTap: () {
-                  AppSettings.openLocationSettings();
-                },
+                ],
               ),
-              SettingsTile(
-                title: 'Change password',
-                leading: Icon(Icons.lock),
+              SettingsSection(
+                title: 'Account',
+                tiles: [
+                  SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+                  SettingsTile.switchTile(
+                    title: 'TextAlerts',
+                    leading: Icon(Icons.textsms),
+                    switchValue: textAlertsEnabled,
+                    onToggle: (bool enabled) {
+                      setState(() {
+                        //TODO update db value before flipping switch
+                        textAlertsEnabled = enabled;
+                      });
+                    },
+                  ),
+                  SettingsTile(
+                    title: 'Sign out',
+                    leading: Icon(Icons.exit_to_app),
+                    onTap: () {
+                      _confirmSignOut(context);
+                    },
+                  ),
+                ],
               ),
+              SettingsSection(
+                title: 'Security',
+                tiles: [
+                  SettingsTile(
+                    title: 'Location permission',
+                    leading: Icon(Icons.lock),
+                    onTap: () {
+                      AppSettings.openLocationSettings();
+                    },
+                  ),
+                  SettingsTile(
+                    title: 'Change password',
+                    leading: Icon(Icons.lock),
+                  ),
+                ],
+              ),
+              SettingsSection(
+                title: 'Misc',
+                tiles: [
+                  SettingsTile(
+                      title: 'Terms of Service',
+                      leading: Icon(Icons.description)),
+                  SettingsTile(
+                      title: 'Open source licenses',
+                      leading: Icon(Icons.collections_bookmark)),
+                ],
+              )
             ],
           ),
-          SettingsSection(
-            title: 'Misc',
-            tiles: [
-              SettingsTile(
-                  title: 'Terms of Service', leading: Icon(Icons.description)),
-              SettingsTile(
-                  title: 'Open source licenses',
-                  leading: Icon(Icons.collections_bookmark)),
-            ],
-          )
-        ],
-      ),
           /*child: ListView(
             children: <Widget>[
               ListTile(
