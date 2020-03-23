@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.healersoft.hcbe_alerts">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="io.skytech.hcbe_alerts">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
