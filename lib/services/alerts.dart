@@ -39,6 +39,7 @@ class Alerts {
   /// update db based on schoolId first
   /// then get location and everything required to create an alert object
   /// create alert object then create new alert under alert collection in db
+  /// cloud function will check for new alerts and send a notification to users in the school
   static fire(String schoolId, String alertType, String userId) async {
     Firestore.instance
         .document("schools/$schoolId")
@@ -71,9 +72,7 @@ class Alerts {
       Firestore.instance
           .collection("alerts")
           .document(docRef.documentID)
-          .updateData({"location": location});
-
-//send fcm to all users with schoolId
+          .updateData({"location": location, "alertId": docRef.documentID});
     });
 
     await prefs.setString('alertMessage', "");
@@ -102,6 +101,14 @@ class Alerts {
     curCode = doc.data["schoolAlertState"];
 
     if (curCode == 'red') {
+      return 'assets/code_red.png';
+    } else if (curCode == 'yellow') {
+      return 'assets/code_red.png';
+    } else if (curCode == 'intruder') {
+      return 'assets/code_red.png';
+    } else if (curCode == 'red') {
+      return 'assets/code_red.png';
+    } else if (curCode == 'blue') {
       return 'assets/code_red.png';
     }
     return "assets/code_green.png";
