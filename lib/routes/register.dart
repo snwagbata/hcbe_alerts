@@ -77,9 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
-          child: Icon(
-            Icons.code,
-          ),
+          child: Icon(Icons.code, color: Theme.of(context).iconTheme.color),
         ),
         labelText: 'School code',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -99,9 +97,8 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
-          child: Icon(
-            Icons.person,
-          ), // icon is 48px widget.
+          child: Icon(Icons.person,
+              color: Theme.of(context).iconTheme.color), // icon is 48px widget.
         ), // icon is 48px widget.
         labelText: 'Name',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -122,12 +119,12 @@ class _RegisterPageState extends State<RegisterPage> {
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Platform.isIOS
-              ? Icon(
-                  CupertinoIcons.mail,
-                )
-              : Icon(
-                  Icons.email,
-                ), // icon is 48px widget.
+              ? Icon(CupertinoIcons.mail,
+                  color: Theme.of(context).iconTheme.color)
+              : Icon(Icons.email,
+                  color: Theme.of(context)
+                      .iconTheme
+                      .color), // icon is 48px widget.
         ), // icon is 48px widget.
         labelText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -148,12 +145,12 @@ class _RegisterPageState extends State<RegisterPage> {
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Platform.isIOS
-              ? Icon(
-                  CupertinoIcons.padlock,
-                )
-              : Icon(
-                  Icons.lock,
-                ), // icon is 48px widget.
+              ? Icon(CupertinoIcons.padlock,
+                  color: Theme.of(context).iconTheme.color)
+              : Icon(Icons.lock,
+                  color: Theme.of(context)
+                      .iconTheme
+                      .color), // icon is 48px widget.
         ), // icon is 48px widget.
         labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -182,7 +179,6 @@ class _RegisterPageState extends State<RegisterPage> {
     final signInLabel = FlatButton(
       child: Text(
         'Have an Account? Sign In.',
-        style: TextStyle(color: Colors.black54),
       ),
       onPressed: () {
         popPushPage(context, LoginPage());
@@ -194,7 +190,6 @@ class _RegisterPageState extends State<RegisterPage> {
         centerTitle: true,
         elevation: 5.0,
       ),
-      backgroundColor: Colors.white,
       body: LoadingScreen(
           child: Form(
             key: _formKey,
@@ -245,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         SystemChannels.textInput.invokeMethod('TextInput.hide');
         await _changeLoadingVisible();
-          await Auth.checkSchoolExist(school);
+        await Auth.checkSchoolExist(school);
         //need await so it has chance to go through error if found.
         await Auth.signUp(email, password).then((uID) {
           Auth.addUserSettingsDB(new User(

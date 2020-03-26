@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 class LoadingScreen extends StatelessWidget {
   final bool inAsyncCall;
   final double opacity;
-  final Color color;
   final Widget progressIndicator;
   final Offset offset;
   final bool dismissible;
@@ -33,7 +32,6 @@ class LoadingScreen extends StatelessWidget {
     Key key,
     @required this.inAsyncCall,
     this.opacity = 1,
-    this.color = Colors.white,
     this.progressIndicator = const CircularProgressIndicator(),
     this.offset,
     this.dismissible = false,
@@ -50,22 +48,26 @@ class LoadingScreen extends StatelessWidget {
       Widget layOutProgressIndicator;
       if (offset == null) {
         layOutProgressIndicator = Center(
-            child: Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  shape: BoxShape.circle,
+          child: Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              shape: BoxShape.circle,
+            ),
+            //need this due to bug...https://github.com/flutter/flutter/issues/18399
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                child: CircularProgressIndicator(
+                  semanticsLabel: "Loading",
                 ),
-                //need this due to bug...https://github.com/flutter/flutter/issues/18399
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    child: CircularProgressIndicator(),
-                    height: 30.0,
-                    width: 30.0,
-                  ),
-                )));
+                height: 30.0,
+                width: 30.0,
+              ),
+            ),
+          ),
+        );
       } else {
         layOutProgressIndicator = Positioned(
           child: progressIndicator,
@@ -75,7 +77,9 @@ class LoadingScreen extends StatelessWidget {
       }
       final modal = [
         new Opacity(
-          child: new ModalBarrier(dismissible: dismissible, color: color),
+          child: new ModalBarrier(
+              dismissible: dismissible,
+              color: Theme.of(context).backgroundColor),
           opacity: opacity,
         ),
         layOutProgressIndicator

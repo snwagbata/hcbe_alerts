@@ -46,9 +46,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           child: Platform.isIOS
               ? Icon(
                   CupertinoIcons.mail,
+                  color: Theme.of(context).iconTheme.color,
                 )
               : Icon(
                   Icons.email,
+                  color: Theme.of(context).iconTheme.color,
                 ),
         ),
         labelText: 'Email',
@@ -66,7 +68,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         },
         padding: EdgeInsets.all(12),
         color: Theme.of(context).primaryColor,
-        child: Text('SEND PASSWORD RESET EMAIL', style: TextStyle(color: Colors.white)),
+        child: Text(
+          'SEND PASSWORD RESET EMAIL',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
 
@@ -75,7 +80,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         centerTitle: true,
         elevation: 5.0,
       ),
-      backgroundColor: Colors.white,
       body: LoadingScreen(
           child: Form(
             key: _formKey,

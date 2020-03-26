@@ -59,12 +59,9 @@ class _LoginPageState extends State<LoginPage> {
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Platform.isIOS
-              ? Icon(
-                  CupertinoIcons.mail,
-                )
-              : Icon(
-                  Icons.email,
-                ),
+              ? Icon(CupertinoIcons.mail,
+                  color: Theme.of(context).iconTheme.color)
+              : Icon(Icons.email, color: Theme.of(context).iconTheme.color),
         ),
         labelText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -85,12 +82,11 @@ class _LoginPageState extends State<LoginPage> {
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Platform.isIOS
-              ? Icon(
-                  CupertinoIcons.padlock,
-                )
-              : Icon(
-                  Icons.lock,
-                ), //icon is 48px widget.
+              ? Icon(CupertinoIcons.padlock,
+                  color: Theme.of(context).iconTheme.color)
+              : Icon(Icons.lock,
+                  color:
+                      Theme.of(context).iconTheme.color), //icon is 48px widget.
         ), // icon is 48px widget.
         labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -115,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
     final forgotLabel = FlatButton(
       child: Text(
         'Forgot password?',
-        style: TextStyle(color: Colors.black54),
       ),
       onPressed: () {
         Navigator.pushNamed(context, '/forgot-password');
@@ -127,7 +122,6 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
         elevation: 5.0,
       ),
-      backgroundColor: Colors.white,
       body: LoadingScreen(
           child: Form(
             key: _formKey,

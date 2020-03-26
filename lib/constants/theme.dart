@@ -7,20 +7,23 @@ ThemeData buildTheme() {
     return base.copyWith(
       headline: base.headline.copyWith(
         fontFamily: 'Merriweather',
-        fontSize: 40.0,
-        color: const Color(0xFF555555),
+        color: const Color(0xFF101010),
       ),
       title: base.title.copyWith(
         fontFamily: 'Merriweather',
-        fontSize: 14.0,
-        color: const Color(0xFF555555),
+        color: const Color(0xFF101010),
       ),
       caption: base.caption.copyWith(
-        color: const Color(0xFF555555),
+        color: const Color(0xFF101010),
       ),
       body1: base.body1.copyWith(
-        fontSize: 12.0,
-        color: const Color(0xFF555555),
+        color: const Color(0xFF101010),
+      ),
+      body2: base.body2.copyWith(
+        color: const Color(0x8A000000),
+      ),
+      subhead: base.subhead.copyWith(
+        color: const Color(0xFF101010),
       ),
     );
   }
@@ -30,33 +33,41 @@ ThemeData buildTheme() {
 
   // And apply changes on it:
   return base.copyWith(
-    textTheme: _buildTextTheme(base.textTheme),
-    primaryColor: const Color(0xff00457c),
-    accentColor: const Color(0xff006fc7),
-    iconTheme: IconThemeData(
-      color: const Color(0xFFCCCCCC),
-      size: 20.0,
-    ),
-    buttonColor: Colors.white,
-    backgroundColor: Colors.white,
-    inputDecorationTheme: InputDecorationTheme(
-      border: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+      textTheme: _buildTextTheme(base.textTheme),
+      primaryColor: const Color(0xff00457c),
+      accentColor: const Color(0xff006fc7),
+      brightness: Brightness.light,
+      iconTheme: IconThemeData(
+        color: const Color(0xFF000000),
       ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black.withOpacity(0.1)),
+      // Make sure bg color us always the same with scaffold bg color
+      backgroundColor: const Color(0xFFF0F0F0),
+      scaffoldBackgroundColor: const Color(0xFFF0F0F0),
+      buttonColor: Colors.white,
+      toggleableActiveColor: const Color(0xff006fc7),
+      indicatorColor: const Color(0xff006fc7),
+      inputDecorationTheme: InputDecorationTheme(
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black.withOpacity(0.1)),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        labelStyle: const TextStyle(
+          color: Colors.black,
+        ),
       ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red),
-      ),
-      labelStyle: const TextStyle(
-        color: Colors.black,
-      ),
-    ),
-  );
+      dialogTheme: DialogTheme(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
+      ));
 }
 
 ThemeData buildDarkTheme() {
@@ -66,20 +77,21 @@ ThemeData buildDarkTheme() {
     return base.copyWith(
       headline: base.headline.copyWith(
         fontFamily: 'Merriweather',
-        fontSize: 40.0,
-        color: const Color(0xFF555555),
+        color: const Color(0xFFFFFFFF),
       ),
       title: base.title.copyWith(
         fontFamily: 'Merriweather',
-        fontSize: 14.0,
-        color: const Color(0xFF555555),
+        color: const Color(0xFFFFFFFF),
       ),
       caption: base.caption.copyWith(
-        color: const Color(0xFF555555),
+        color: const Color(0xFFFFFFFF),
       ),
       body1: base.body1.copyWith(
-        fontSize: 12.0,
-        color: const Color(0xFF555555),
+        color: const Color(0xFFFFFFFF),
+      ),
+      body2: base.body2.copyWith(color: const Color(0x8AFFFFFF)),
+      subhead: base.subhead.copyWith(
+        color: const Color(0xFFFFFFFF),
       ),
     );
   }
@@ -91,27 +103,38 @@ ThemeData buildDarkTheme() {
   return base.copyWith(
     textTheme: _buildTextTheme(base.textTheme),
     primaryColor: const Color(0xff00457c),
-    accentColor: const Color(0xFFFFFFFF),
-    iconTheme: IconThemeData(
-      color: const Color(0xfff5f5f5),
-      size: 20.0,
-    ),
+    accentColor: const Color(0xff006fc7),
+    brightness: Brightness.dark,
+    // Make sure bg color us always the same with scaffold bg color
+    backgroundColor: const Color(0xEE000000),
+    scaffoldBackgroundColor: const Color(0xEE000000),
     buttonColor: Colors.white,
+    toggleableActiveColor: const Color(0xff006fc7),
+    indicatorColor: const Color(0xff006fc7),
+    iconTheme: IconThemeData(
+      color: const Color(0xffffffff),
+    ),
+    dividerColor: const Color(0xffaaaaaa),
     inputDecorationTheme: InputDecorationTheme(
       border: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: Colors.white),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black.withOpacity(0.1)),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
       ),
       focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: Colors.white),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.red),
       ),
       labelStyle: const TextStyle(
-        color: Colors.black,
+        color: Colors.white,
+      ),
+    ),
+    dialogTheme: DialogTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
     ),
   );
