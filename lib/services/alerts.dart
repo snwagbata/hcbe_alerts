@@ -4,35 +4,6 @@ import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Alerts {
-  /// Returns the school alert state
-  static Future<String> getCurrentAlert(String schoolId) async {
-    String curCode = "";
-    var doc = await Firestore.instance.document("schools/$schoolId").get();
-    curCode = doc.data["schoolAlertState"];
-    return curCode;
-  }
-
-  static Future<String> getCurrentAlertName(String schoolId) async {
-    String curCode = await getCurrentAlert(schoolId);
-
-    switch (curCode) {
-      case "red":
-        return "Code Red";
-        break;
-      case "blue":
-        return "Code Blue";
-        break;
-      case "intruder":
-        return "Active Intruder";
-        break;
-      case "yellow":
-        return "Code Yellow";
-        break;
-      default:
-        return "Code Green";
-    }
-  }
-
   static checkActiveAlerts() {}
 
   /// fire() method will get `String schoolId` and change alert type of school based on `String alertType`
@@ -48,7 +19,7 @@ class Alerts {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String _alertMessage;
-    if (prefs.getString('settings') != null) {
+    if (prefs.getString('alertMessage') != null) {
       _alertMessage = prefs.getString('alertMessage');
     } else {
       _alertMessage = "";
@@ -68,19 +39,29 @@ class Alerts {
         .add(sendToDB.toJson())
         .then((docRef) async {
       //update location
-      GeoPoint location = await _getLocation();
+      GeoPoint location;
+      try {
+        location = await _getLocation();
+      } catch (e) {
+        //if analytics is ever used. here is one place to use it
+      }
+      //update alert id, location, and timestamp
       Firestore.instance
           .collection("alerts")
           .document(docRef.documentID)
-          .updateData({"location": location, "alertId": docRef.documentID});
+          .updateData({
+        "location": location,
+        "alertId": docRef.documentID,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
+      Firestore.instance
+          .collection("schools")
+          .document(schoolId)
+          .updateData({"curAlertId": docRef.documentID});
     });
 
     await prefs.setString('alertMessage', "");
   }
-
-  /// Updates current active alert with message. Only works when current school alert is not `green`
-  ///
-  static void updateAlertMessages(String message) {}
 
   /// Get location, return null if access denied
   static Future<GeoPoint> _getLocation() async {
@@ -95,22 +76,29 @@ class Alerts {
     return _curLoc;
   }
 
-  static Future<String> getAlertImgPath(String schoolId) async {
-    String curCode = "";
-    var doc = await Firestore.instance.document("schools/$schoolId").get();
-    curCode = doc.data["schoolAlertState"];
+  /// Updates current active alert with message. Only works when current school alert is not `green`
+  ///
+  static void updateAlertMessages(String message, String alertId) {} 
 
-    if (curCode == 'red') {
-      return 'assets/code_red.png';
-    } else if (curCode == 'yellow') {
-      return 'assets/code_red.png';
-    } else if (curCode == 'intruder') {
-      return 'assets/code_red.png';
-    } else if (curCode == 'red') {
-      return 'assets/code_red.png';
-    } else if (curCode == 'blue') {
-      return 'assets/code_red.png';
-    }
-    return "assets/code_green.png";
+  ///
+  ///
+  static void goGreen(String schoolId, String alertId) async {
+    //update school's field values
+    Firestore.instance.document("schools/$schoolId").updateData(
+      {
+        "schoolAlertState": "green",
+        "schoolAlertActive": false,
+        "curAlertId": "",
+      },
+    );
+
+//update current alert field to mark it as resolved
+    var timeResolved = DateTime.now();
+    Firestore.instance.collection("alerts").document(alertId).updateData(
+      {
+        "alertActive": false,
+        "timeResolved": timeResolved,
+      },
+    );
   }
 }
