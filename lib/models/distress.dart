@@ -84,10 +84,11 @@ class Distress {
     "location" : location 
       };
 
+
   factory Distress.fromDocument(DocumentSnapshot doc) {
     return Distress.fromJson(doc.data);
   }
 
   @override
-  String toString() => 'Distress($schoolId, $distressType, $message,)';
+  String toString() => 'New $distressType at $schoolId. Message: $message';
 }
