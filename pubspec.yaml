@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 0.1.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -36,7 +36,7 @@ dependencies:
   location_permissions: ^2.0.4+1
   #shared preferences for in-app settings
   shared_preferences: any
-  #autocomplete for registeration page
+  #autocomplete for registration page
   autocomplete_textfield: ^1.7.3
   #location package
   location: ^2.3.5
@@ -46,6 +46,13 @@ dependencies:
   settings_ui: ^0.2.0
   #app settings locator
   app_settings: ^3.0.1
+  #querying application info
+  package_info: '>=0.4.0+16 <2.0.0'
+  #querying device info
+  device_info: ^0.4.2+1
+  # formatting date and time plus localized msgs if needed
+  intl: ^0.16.1
+
 
 dev_dependencies:
   flutter_test:

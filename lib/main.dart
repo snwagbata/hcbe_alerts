@@ -22,12 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'HCBE Alerts',
       theme: buildTheme(),
-      darkTheme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        accentColor: Colors.deepPurple,
-        brightness: Brightness.dark,
-      ),
-      //onGenerateRoute: Navigation.router.generator,
+      darkTheme: buildDarkTheme(),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
@@ -43,29 +38,8 @@ class MyApp extends StatelessWidget {
 }
 
 void main() {
-  StateWidget stateWidget = new StateWidget(
-    child: new MyApp(),
+  StateWidget stateWidget = StateWidget(
+    child: MyApp(),
   );
   runApp(stateWidget);
 }
-
-/**
- * void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'HCBE Alerts',
-      theme: buildTheme(),
-      home: RootPage(),
-      routes: {
-        '/': (context) => HomePage(),
-        '/signin': (context) => LoginPage(),
-        '/signup': (context) => RegisterPage(),
-        '/forgot-password': (context) => ForgotPasswordScreen(),
-      },
-    );
-  }
-}
- */
