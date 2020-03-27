@@ -34,6 +34,7 @@ class _DefaultPageState extends State<DefaultPage> {
       _loadingVisible = false;
     }
 
+    ///TODO might implement a full screen confirmation dialog to handle alert triggers
     Future<void> _confirmAlertTrigger(
         BuildContext context, String title, String alert) async {
       final bool didTriggerAlert = await DistressAlertDialog(
@@ -48,46 +49,432 @@ class _DefaultPageState extends State<DefaultPage> {
       }
     }
 
-    final activeIntruder = RaisedButton(
-      onPressed: () {
-        _confirmAlertTrigger(context, "Active Intruder", "intruder");
-      },
-      padding: EdgeInsets.symmetric(vertical: 12),
-      color: Colors.grey,
-      child: Text("Active Intruder"),
+    final activeIntruder = SizedBox(
+      width: double.infinity,
+      child: RaisedButton(
+        onPressed: () {
+          _confirmAlertTrigger(context, "Active Intruder", "intruder");
+        },
+        padding: EdgeInsets.symmetric(vertical: 12),
+        color: Colors.grey,
+        child: Text("Active Intruder"),
+      ),
     );
-    final codeRed = RaisedButton(
-      onPressed: () {
-        _confirmAlertTrigger(context, "Code Red", "red");
-      },
-      padding: EdgeInsets.symmetric(vertical: 12),
-      color: Colors.red,
-      child: Text("Code Red"),
+    final codeRed = SizedBox(
+      width: double.infinity,
+      child: RaisedButton(
+        onPressed: () {
+          _confirmAlertTrigger(context, "Code Red", "red");
+        },
+        padding: EdgeInsets.symmetric(vertical: 12),
+        color: Colors.red,
+        child: Text("Code Red"),
+      ),
     );
-    final codeYellow = RaisedButton(
-      onPressed: () {
-        _confirmAlertTrigger(context, "Code Yellow", "yellow");
-      },
-      padding: EdgeInsets.symmetric(vertical: 12),
-      color: Colors.yellow,
-      child: Text("Code Yellow"),
+    final codeYellow = SizedBox(
+      width: double.infinity,
+      child: RaisedButton(
+        onPressed: () {
+          _confirmAlertTrigger(context, "Code Yellow", "yellow");
+        },
+        padding: EdgeInsets.symmetric(vertical: 12),
+        color: Colors.yellow,
+        child: Text("Code Yellow"),
+      ),
     );
-    final codeBlue = RaisedButton(
-      onPressed: () {
-        _confirmAlertTrigger(context, "Code Blue", "blue");
-      },
-      padding: EdgeInsets.symmetric(vertical: 12),
-      color: Colors.blue,
-      child: Text("Code Blue"),
+    final codeBlue = SizedBox(
+      width: double.infinity,
+      child: RaisedButton(
+        onPressed: () {
+          _confirmAlertTrigger(context, "Code Blue", "blue");
+        },
+        padding: EdgeInsets.symmetric(vertical: 12),
+        color: Colors.blue,
+        child: Text("Code Blue"),
+      ),
     );
 
+    final activeIntruderProcedures = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Quickly clear the hall of any students near your room.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "If near an exterior door, ensure that door is closed and locked, if possible and safe.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "If near a restroom, quickly clear that restroom only, if possible and safe.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(text: "Lock your classroom door and "),
+                TextSpan(
+                    text: "DO NOT",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                    )),
+                TextSpan(
+                    text:
+                        " open the door for anyone. Admin and staff will opwn with a key if entry is needed.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Slide the appropriate colored card under the door. (Green = All Good, Yellow = Missing Students, Red = Emergency in the Room)",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Cover your classroom door and close the blinds on the outside window.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Turn off the lights.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Place students on the floor out of sight of the window.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Ensure your cell phone is turned on.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: "DO NOT",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                    text:
+                        " allow any student calls. Have students turn their phones off so no sounds are made.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: "DO NOT",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: " let students leave the room for ",
+                ),
+                TextSpan(
+                  text: "ANY",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(text: " reason.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "PRIORITIZE your and your students' safety 1st!",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Barricade your door from the inside using any and all available funiture near the classroom door.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+      ],
+    );
+    final codeRedProcedures = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Quickly clear the hall of any students near your room.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "If near an exterior door, ensure that door is closed and locked, if possible and safe.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "If near a restroom, quickly clear that restroom only, if possible and safe.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(text: "Lock your classroom door and "),
+                TextSpan(
+                    text: "DO NOT",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                    )),
+                TextSpan(
+                    text:
+                        " open the door for anyone. Admin and staff will opwn with a key if entry is needed.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Slide the appropriate colored card under the door. (Green = All Good, Yellow = Missing Students, Red = Emergency in the Room)",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Cover your classroom door and close the blinds on the outside window.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Turn off the lights.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Place students on the floor out of sight of the window.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Ensure your cell phone is turned on.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: "DO NOT",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                    text:
+                        " allow any student calls. Have students turn their phones off so no sounds are made.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: "DO NOT",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: " let students leave the room for ",
+                ),
+                TextSpan(
+                  text: "ANY",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(text: " reason.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+      ],
+    );
+    final codeYellowProcedures = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Quickly clear the hall of any students near your room.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "If near an exterior door, ensure that door is closed and locked.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "If near a restroom, quickly clear that restroom only.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Lock your classroom door.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Slide the appropriate colored card under the door. (Green = All Good, Yellow = Missing Students, Red = Emergency in the Room)",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Ensure your cell phone is turned on.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: "DO NOT",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: " let students leave the room for ",
+                ),
+                TextSpan(
+                  text: "ANY",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(text: " reason.")
+              ],
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Continue with normal classroom operations.",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+      ],
+    );
+    final codeBlueProcedures = Column(children: <Widget>[
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Text(
+          "Remove students from the immediate area and send to a neighboring classroom. Remain with the student in need of help until assistance arrives.",
+          style: TextStyle(fontSize: 15),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Text(
+          "ALL teachers/classrooms, continue with classs as normal and limit students leaving the room to emergencies only.",
+          style: TextStyle(fontSize: 15),
+        ),
+      ),
+    ]);
+    final codeGreenProcedures = Container();
+
+    /// default build for when the schoolAlertActive is false
     initBuild() {
       return ListView(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         children: <Widget>[
           Center(
             child: AutoSizeText(
               _currentSchoolName,
-              style: Theme.of(context).textTheme.title.copyWith(
+              style: Theme.of(context).textTheme.headline.copyWith(
                     fontSize: 22,
                   ),
               minFontSize: 16,
@@ -96,9 +483,11 @@ class _DefaultPageState extends State<DefaultPage> {
             ),
           ),
           SizedBox(height: 12.0),
-          Hero(
-            tag: 'hero',
-            child: CircleAvatar(
+          Align(
+            alignment: Alignment.center,
+            child: Hero(
+              tag: 'code image',
+              child: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 90.0,
                 child: ClipOval(
@@ -108,32 +497,108 @@ class _DefaultPageState extends State<DefaultPage> {
                     width: 160.0,
                     height: 160.0,
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
           Center(
               child: Text("Currently active: " + _currentCode,
                   style: TextStyle(fontWeight: FontWeight.bold))),
-          SizedBox(height: 10.0),
-          activeIntruder,
-          SizedBox(height: 10.0),
-          codeRed,
-          SizedBox(height: 10.0),
-          codeYellow,
-          SizedBox(height: 10.0),
-          codeBlue,
+          Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 10.0),
+                activeIntruder,
+                SizedBox(height: 10.0),
+                codeRed,
+                SizedBox(height: 10.0),
+                codeYellow,
+                SizedBox(height: 10.0),
+                codeBlue,
+              ],
+            ),
+          ),
         ],
       );
     }
 
-    alertActiveBuild() {
-      return ListView(children: <Widget>[]);
+    /// if schoolAlertActive is true this build is returned
+    alertActiveBuild(AsyncSnapshot snapshot) {
+      var doc = snapshot.data;
+      Widget _codeProcedures;
+
+      switch (doc["schoolAlertState"]) {
+        case "red":
+          _codeProcedures = codeRedProcedures;
+          break;
+        case "blue":
+          _codeProcedures = codeBlueProcedures;
+          break;
+        case "intruder":
+          _codeProcedures = activeIntruderProcedures;
+          break;
+        case "yellow":
+          _codeProcedures = codeYellowProcedures;
+          break;
+        default:
+          _codeProcedures = codeGreenProcedures;
+      }
+      return ListView(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        children: <Widget>[
+          Center(
+            child: AutoSizeText(
+              _currentSchoolName,
+              style: Theme.of(context).textTheme.headline.copyWith(
+                    fontSize: 22,
+                  ),
+              minFontSize: 16,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 16.0),
+          Align(
+            child: Hero(
+              tag: 'code image',
+              child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 90.0,
+                  child: ClipOval(
+                    child: Image.asset(
+                      _currentCodeImg,
+                      fit: BoxFit.cover,
+                      width: 160.0,
+                      height: 160.0,
+                    ),
+                  )),
+            ),
+          ),
+          Center(
+            child: Text("Currently active: " + _currentCode,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(height: 15.0),
+          Column(
+            children: <Widget>[
+              Text(
+                _currentCode + " Quick Reference",
+                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20),
+                textAlign: TextAlign.left,
+              ),
+              _codeProcedures,
+            ],
+          ),
+        ],
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 5.0,
-        // title: Text('HCBE Alerts'),
+        title: Text('HCBE Alerts'),
         actions: <Widget>[
           IconButton(
             icon: Platform.isIOS
@@ -150,54 +615,55 @@ class _DefaultPageState extends State<DefaultPage> {
         ],
       ),
       drawer: NavDrawer(),
-      backgroundColor: Colors.white,
       body: LoadingScreen(
-          child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-              child: StreamBuilder(
-                stream: Firestore.instance
-                    .collection('schools')
-                    .document(schoolId)
-                    .snapshots(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return LinearProgressIndicator();
-                  }
-                  var doc = snapshot.data;
+          child: StreamBuilder(
+            stream: Firestore.instance
+                .collection('schools')
+                .document(schoolId)
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    semanticsLabel: "Loading",
+                  ),
+                );
+              }
+              var doc = snapshot.data;
 
-                  switch (doc["schoolAlertState"]) {
-                    case "red":
-                      _currentCodeImg = 'assets/code_red.png';
-                      break;
-                    default:
-                      _currentCodeImg = 'assets/code_green.png';
-                  }
+              ///TODO add the images for the other codes
+              switch (doc["schoolAlertState"]) {
+                case "red":
+                  _currentCodeImg = 'assets/code_red.png';
+                  break;
+                default:
+                  _currentCodeImg = 'assets/code_green.png';
+              }
 
-                  switch (doc["schoolAlertState"]) {
-                    case "red":
-                      _currentCode = "Code Red";
-                      break;
-                    case "blue":
-                      _currentCode = "Code Blue";
-                      break;
-                    case "intruder":
-                      _currentCode = "Active Intruder";
-                      break;
-                    case "yellow":
-                      _currentCode = "Code Yellow";
-                      break;
-                    default:
-                      _currentCode = "Code Green";
-                  }
-                  _currentSchoolName = doc["name"];
-                  if (doc["schoolAlertActive"]) {
-                    return alertActiveBuild();
-                  } else {
-                    return initBuild();
-                  }
-                },
-              )),
+              switch (doc["schoolAlertState"]) {
+                case "red":
+                  _currentCode = "Code Red";
+                  break;
+                case "blue":
+                  _currentCode = "Code Blue";
+                  break;
+                case "intruder":
+                  _currentCode = "Active Intruder";
+                  break;
+                case "yellow":
+                  _currentCode = "Code Yellow";
+                  break;
+                default:
+                  _currentCode = "Code Green";
+              }
+              _currentSchoolName = doc["name"];
+              if (doc["schoolAlertActive"]) {
+                return alertActiveBuild(snapshot);
+              } else {
+                return initBuild();
+              }
+            },
+          ),
           inAsyncCall: _loadingVisible),
     );
   }
