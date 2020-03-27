@@ -1,9 +1,12 @@
+import 'dart:io';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:hcbe_alerts/models/state.dart';
 import 'package:hcbe_alerts/routes/landing.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/flushbar.dart';
 import 'package:hcbe_alerts/widgets/platform_alert_dialog.dart';
+import 'package:hcbe_alerts/widgets/about_dialog.dart' as about;
 import 'package:settings_ui/settings_ui.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +18,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   StateModel appState;
   bool textAlertsEnabled = false;
+  var version;
   @override
   void initState() {
     super.initState();
@@ -37,6 +41,18 @@ class _SettingsPageState extends State<SettingsPage> {
         }
       }
 
+      _getThemeTextBasedOnVersion() async {
+        if (Platform.isAndroid) {
+          var androidInfo = await DeviceInfoPlugin().androidInfo;
+          version = androidInfo.version.sdkInt;
+          if (version >= 29) {
+            return 'System default';
+          }
+          return 'Set by Battery Saver';
+        }
+        return 'Device Not Supported';
+      }
+
       Future<void> _confirmSignOut(BuildContext context) async {
         final bool didRequestSignOut = await PlatformAlertDialog(
           title: 'Sign Out',
@@ -45,7 +61,66 @@ class _SettingsPageState extends State<SettingsPage> {
           defaultActionText: 'Sign Out',
         ).show(context);
         if (didRequestSignOut == true) {
+          Navigator.pop(context);
           _signOut(context);
+        }
+      }
+      //TODO use shared preferences to store values
+      Future<void> _changeTheme() async {
+        var plaformText = await _getThemeTextBasedOnVersion();
+        int radioValue = 0;
+        switch (await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: const Text('Choose theme'),
+                children: <Widget>[
+                  RadioListTile(
+                    title: Text("Light"),
+                    value: 1,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      setState(() {
+                        radioValue = 1;
+                      });
+                      Navigator.pop(context, 'Light');
+                    },
+                  ),
+                  RadioListTile(
+                    title: Text("Dark"),
+                    value: 2,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      setState(() {
+                        radioValue = 2;
+                      });
+                      Navigator.pop(context, 'Dark');
+                    },
+                  ),
+                  RadioListTile(
+                    title: Text(plaformText),
+                    value: 0,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      setState(() {
+                        radioValue = 0;
+                      });
+                      Navigator.pop(context, 'System');
+                    },
+                  ),
+                ],
+              );
+            })) {
+          case 'Light':
+            // Let's go.
+            // ...
+            break;
+          case 'Dark':
+            // ...
+            break;
+          case 'System':
+            // ...
+            break;
         }
       }
 
@@ -57,26 +132,35 @@ class _SettingsPageState extends State<SettingsPage> {
         body: SafeArea(
           child: SettingsList(
             sections: [
+              /*
               SettingsSection(
                 title: 'Common',
                 tiles: [
-                  /*SettingsTile(
+                  SettingsTile(
                 title: 'Language',
                 subtitle: 'English',
-                leading: Icon(Icons.language),  will implement spanish later
+                leading: Icon(Icons.language, color: Theme.of(context).iconTheme.color),  will implement spanish later
                 onTap: () {
                   Navigator.of(context);
                 },
-              ),*/
-                ],
               ),
+                ],
+              ),*/
               SettingsSection(
                 title: 'Account',
                 tiles: [
-                  SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+                  SettingsTile(
+                      title: 'Email',
+                      leading: Icon(Icons.email,
+                          color: Theme.of(context).iconTheme.color)),
+                  SettingsTile(
+                      title: 'Change school',
+                      leading: Icon(Icons.school,
+                          color: Theme.of(context).iconTheme.color)),
                   SettingsTile.switchTile(
                     title: 'TextAlerts',
-                    leading: Icon(Icons.textsms),
+                    leading: Icon(Icons.textsms,
+                        color: Theme.of(context).iconTheme.color),
                     switchValue: textAlertsEnabled,
                     onToggle: (bool enabled) {
                       setState(() {
@@ -87,7 +171,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   SettingsTile(
                     title: 'Sign out',
-                    leading: Icon(Icons.exit_to_app),
+                    leading: Icon(Icons.exit_to_app,
+                        color: Theme.of(context).iconTheme.color),
                     onTap: () {
                       _confirmSignOut(context);
                     },
@@ -99,26 +184,57 @@ class _SettingsPageState extends State<SettingsPage> {
                 tiles: [
                   SettingsTile(
                     title: 'Location permission',
-                    leading: Icon(Icons.lock),
+                    leading: Icon(Icons.location_on,
+                        color: Theme.of(context).iconTheme.color),
                     onTap: () {
-                      AppSettings.openLocationSettings();
+                      AppSettings.openAppSettings();
                     },
                   ),
                   SettingsTile(
                     title: 'Change password',
-                    leading: Icon(Icons.lock),
+                    leading: Icon(Icons.lock,
+                        color: Theme.of(context).iconTheme.color),
                   ),
                 ],
               ),
+              Platform.isAndroid
+                  ? SettingsSection(
+                      title: 'Theme',
+                      tiles: [
+                        SettingsTile(
+                          title: 'Choose Theme',
+                          leading: Icon(Icons.brightness_medium,
+                              color: Theme.of(context).iconTheme.color),
+                          subtitle: Theme.of(context).brightness ==
+                                  Brightness.light
+                              ? 'Light'
+                              : Theme.of(context).brightness == Brightness.dark
+                                  ? 'Dark'
+                                  : Platform.isAndroid
+                                      ? _getThemeTextBasedOnVersion()
+                                      : null,
+                          onTap: () {
+                            _changeTheme();
+                          },
+                        ),
+                      ],
+                    )
+                  : null,
               SettingsSection(
                 title: 'Misc',
                 tiles: [
                   SettingsTile(
                       title: 'Terms of Service',
-                      leading: Icon(Icons.description)),
+                      leading: Icon(Icons.description,
+                          color: Theme.of(context).iconTheme.color)),
                   SettingsTile(
-                      title: 'Open source licenses',
-                      leading: Icon(Icons.collections_bookmark)),
+                    title: 'About HCBE Alerts',
+                    leading: Icon(Icons.info_outline,
+                        color: Theme.of(context).iconTheme.color),
+                    onTap: () {
+                      about.showAboutDialog(context: context);
+                    },
+                  ),
                 ],
               )
             ],
@@ -148,7 +264,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Divider(),
               ListTile(
                 //use aboutDialog ontap
-                title: Text("Copyright ©2020 NS Tech"),
+                title: Text("Copyright ©2020 SKY Tech"),
                 subtitle: Text("Somtochukwu Nwagbata"),
               ),
               Divider(),
