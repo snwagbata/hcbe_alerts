@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import axios from 'axios';
 
 admin.initializeApp();
 
@@ -59,9 +60,34 @@ export const sendTextNotif = functions.firestore
   .onCreate(async (snapshot) => {
     //get schoolId
     const alert = snapshot.data();
+    let alertType = alert?.alertType;
+    let alertName;
     let schoolId = alert?.schoolId;
-    let TextAlertsUserNumbers: number[];
+    let textAlertsUserNumbers: string[] = new Array();
 
+
+    switch (alertType) {
+      case "red":
+        alertName = "Code Red";
+        break;
+
+      case "yellow":
+        alertName = "Code Yellow";
+        break;
+
+      case "blue":
+        alertName = "Code Blue";
+        break;
+
+      case "intruder":
+        alertName = "Active Intruder";
+        break;
+
+      default:
+        alertName = "Code Green";
+        break;
+
+    }
 
     db.collection('users').where('schoolId', '==', schoolId).where('TextAlertsOptIn', '==', true).get()
       .then(snapshot => {
@@ -70,12 +96,27 @@ export const sendTextNotif = functions.firestore
           return;
         }
         snapshot.forEach(doc => {
-          TextAlertsUserNumbers.push
-          console.log(doc.id, '=>', doc.data());
+          let user = doc.data();
+          let userPhoneNumber = user?.phoneNumber;
+          textAlertsUserNumbers.push(userPhoneNumber);
         });
       })
       .catch(err => {
         console.log('Error getting documents', err);
       });
+
+    /**
+     * Will now iterate over the TextAlertsUserNumbers Array and 
+     * send a text 
+     */
+    for (var i in textAlertsUserNumbers) {
+      //Send number to textserver with message
+      axios.post('https://textalerts.herokuapp.com/text', {
+        phone: i,
+        message: `${alertName} has been activated. Please follow the ${alertName} procedures.`,
+      }).then(response => {
+        console.log(response.data);
+      })
+    }
 
   });
