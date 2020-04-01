@@ -11,6 +11,7 @@ import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/alert_card.dart';
 import 'package:hcbe_alerts/widgets/distress_dialog_admin.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class SchoolAdminPage extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
   StateModel appState;
   bool _loadingVisible = false;
   String _currentCode = "";
-  String _currentCodeImg = "assets/code_green.png";
+  Icon _currentCodeImg;
   String _currentSchoolName = "";
 
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
         alert: "green",
       ).show(context);
       if (codeGreen != false) {
-        await Alerts.goGreen(schoolId, alertId);
+        Alerts.goGreen(schoolId, alertId);
       }
     }
 
@@ -62,61 +63,68 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
       }
     }
 
-    final activeIntruder = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Active Intruder", "intruder");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.grey,
-        child: Text("Active Intruder"),
+    final activeIntruder = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Active Intruder", "intruder");
+      },
+      padding: EdgeInsets.symmetric(vertical: 6),
+      color: (Theme.of(context).brightness == Brightness.dark)
+          ? Colors.purple
+          : Color(0XFFd05ce3),
+      child: Text("Active Intruder"),
     );
-    final codeRed = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Code Red", "red");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.red,
-        child: Text("Code Red"),
+    final codeRed = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Code Red", "red");
+      },
+      padding: EdgeInsets.symmetric(vertical: 6),
+      color: Colors.red,
+      child: Text("Code Red"),
     );
-    final codeYellow = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Code Yellow", "yellow");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.yellow,
-        child: Text("Code Yellow"),
+    final codeYellow = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Code Yellow", "yellow");
+      },
+      padding: EdgeInsets.symmetric(vertical: 12),
+      color: Color(0xFFffc107),
+      child: Text("Code Yellow"),
     );
-    final codeBlue = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Code Blue", "blue");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.blue,
-        child: Text("Code Blue"),
+    final codeBlue = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Code Blue", "blue");
+      },
+      padding: EdgeInsets.symmetric(vertical: 4),
+      color: Colors.blue,
+      child: Text("Code Blue"),
     );
     _codeGreen(String alertId) {
-      return SizedBox(
-        width: double.infinity,
-        child: RaisedButton(
-          onPressed: () {
-            _confirmCodeGreen(context, alertId);
-          },
-          padding: EdgeInsets.symmetric(vertical: 12),
-          color: Colors.green,
-          child: Text("Code Green"),
+      return RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
+        elevation: 15,
+        onPressed: () {
+          _confirmCodeGreen(context, alertId);
+        },
+        padding: EdgeInsets.symmetric(vertical: 12),
+        color: Colors.green,
+        child: Text("Code Green"),
       );
     }
 
@@ -128,117 +136,141 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
             .document(schoolId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.connectionState == ConnectionState.none) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          while (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(
                 semanticsLabel: "Loading",
               ),
             );
           }
-          if (snapshot.connectionState == ConnectionState.done &&
-              !snapshot.hasData) {
-            return Center(
-              child: Text(
-                  "We could not find a school associated with you. Please change your school."),
-            );
-          }
-          var doc = snapshot.data;
 
-          ///TODO add the images for the other codes
-          switch (doc["schoolAlertState"]) {
-            case "red":
-              _currentCodeImg = 'assets/code_red.png';
-              break;
-            default:
-              _currentCodeImg = 'assets/code_green.png';
-          }
+          if (snapshot.hasData) {
+            var doc = snapshot.data;
 
-          switch (doc["schoolAlertState"]) {
-            case "red":
-              _currentCode = "Code Red";
-              break;
-            case "blue":
-              _currentCode = "Code Blue";
-              break;
-            case "intruder":
-              _currentCode = "Active Intruder";
-              break;
-            case "yellow":
-              _currentCode = "Code Yellow";
-              break;
-            default:
-              _currentCode = "Code Green";
-          }
-          _currentSchoolName = doc["name"];
-          return ListView(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-            children: <Widget>[
-              Center(
-                child: AutoSizeText(
-                  _currentSchoolName,
-                  style: Theme.of(context).textTheme.headline.copyWith(
-                        fontSize: 22,
-                      ),
-                  minFontSize: 16,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
+            switch (doc["schoolAlertState"]) {
+              case "intruder":
+                _currentCodeImg = Icon(LineAwesomeIcons.exclamation_triangle,
+                    color: (Theme.of(context).brightness == Brightness.dark)
+                        ? Colors.purple
+                        : Color(0XFFd05ce3),
+                    size: 120);
+                break;
+              case "red":
+                _currentCodeImg = Icon(LineAwesomeIcons.times_circle_o,
+                    color: Colors.red, size: 120);
+                break;
+              case "yellow":
+                _currentCodeImg = Icon(LineAwesomeIcons.minus_circle,
+                    color: Color(0xFFffc107), size: 120);
+                break;
+              case "blue":
+                _currentCodeImg = Icon(LineAwesomeIcons.plus_circle,
+                    color: Colors.blue, size: 120);
+                break;
+              default:
+                _currentCodeImg = Icon(
+                  LineAwesomeIcons.check_circle,
+                  color: Colors.green,
+                  size: 120,
+                );
+            }
+
+            switch (doc["schoolAlertState"]) {
+              case "red":
+                _currentCode = "Code Red";
+                break;
+              case "blue":
+                _currentCode = "Code Blue";
+                break;
+              case "intruder":
+                _currentCode = "Active Intruder";
+                break;
+              case "yellow":
+                _currentCode = "Code Yellow";
+                break;
+              default:
+                _currentCode = "Code Green";
+            }
+            _currentSchoolName = doc["name"];
+            return ListView(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              children: <Widget>[
+                SizedBox(height: 4.0),
+                Center(
+                  child: AutoSizeText(
+                    _currentSchoolName,
+                    style: Theme.of(context).textTheme.headline.copyWith(
+                          fontSize: 22,
+                        ),
+                    minFontSize: 16,
+                    maxLines: 2,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-              ),
-              SizedBox(height: 12.0),
-              Align(
-                alignment: Alignment.center,
-                child: Hero(
-                  tag: 'code image',
-                  child: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    radius: 90.0,
-                    child: ClipOval(
-                      child: Image.asset(
-                        _currentCodeImg,
-                        fit: BoxFit.cover,
-                        width: 160.0,
-                        height: 160.0,
-                      ),
+                SizedBox(height: 4.0),
+                Card(
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 7),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: _currentCodeImg,
+                        ),
+                        Center(
+                          child: Text(
+                            "Currently active: " + _currentCode,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              Center(
-                  child: Text("Currently active: " + _currentCode,
-                      style: TextStyle(fontWeight: FontWeight.bold))),
-              doc["schoolAlertActive"]
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: Column(
+                doc["schoolAlertActive"]
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(height: 10.0),
+                            _codeGreen(doc["curAlertId"]),
+                          ],
+                        ),
+                      )
+                    : GridView.count(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.85,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 7, horizontal: 7),
                         children: <Widget>[
-                          SizedBox(height: 10.0),
-                          _codeGreen(doc["curAlertId"]),
-                          SizedBox(height: 10.0),
-                          //codeRed,
-                          SizedBox(height: 10.0),
-                          //codeYellow,
-                          SizedBox(height: 10.0),
-                          //codeBlue,
-                        ],
-                      ),
-                    )
-                  : Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: 10.0),
                           activeIntruder,
-                          SizedBox(height: 10.0),
                           codeRed,
-                          SizedBox(height: 10.0),
                           codeYellow,
-                          SizedBox(height: 10.0),
                           codeBlue,
                         ],
                       ),
-                    ),
-            ],
+              ],
+            );
+          }
+
+          return Center(
+            child: Text(
+                "We could not find a school associated with you. Please change your school."),
           );
         },
       );
@@ -279,16 +311,16 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
             );
           }
 
-          if (snapshot.data == null) {
-            return Center(
-              child: Text(
-                "No alerts have been activated yet.",
-                style: Theme.of(context).textTheme.body1,
-              ),
-            );
+          if (snapshot.hasData) {
+            return _buildAlertsList(context, snapshot.data.documents);
           }
 
-          return _buildAlertsList(context, snapshot.data.documents);
+          return Center(
+            child: Text(
+              "No alerts have been activated yet.",
+              style: Theme.of(context).textTheme.body1,
+            ),
+          );
         },
       );
     }
