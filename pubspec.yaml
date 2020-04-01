@@ -22,24 +22,22 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^0.1.3
   # Firebase packages
   firebase_core: ^0.4.0+1
   firebase_auth: ^0.14.0+5
-  cloud_firestore: ^0.12.9+4
+  cloud_firestore: ^0.13.4+2
   firebase_messaging: ^6.0.9
   #flushbar for snackbar-like widget but more customizations
   flushbar: ^1.9.0
   #util for responsive design
-  flutter_screenutil: ^0.6.0
-  #location permission handler
-  location_permissions: ^2.0.4+1
+  flutter_screenutil: ^1.1.0
   #shared preferences for in-app settings
   shared_preferences: any
   #autocomplete for registration page
   autocomplete_textfield: ^1.7.3
-  #location package
-  location: ^2.3.5
+  #location package && also handles location permissions
+  location: ^3.0.1
   #text resize flutter 
   auto_size_text: ^2.1.0
   #settings ui
@@ -52,6 +50,11 @@ dependencies:
   device_info: ^0.4.2+1
   # formatting date and time plus localized msgs if needed
   intl: ^0.16.1
+  #line awesome - possible replace for icons throughout app
+  line_awesome_icons: ^1.0.4+2
+  #google maps plugin
+  google_maps_flutter: ^0.5.25+2
+
 
 
 dev_dependencies:
