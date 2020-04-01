@@ -36,7 +36,7 @@ class Distress {
   String message;
 
   /// Device location of user
-  final dynamic location;
+  final GeoPoint location;
 
   /// Current time
   final dynamic timeTriggered; //= new DateTime.now(); <--- Call that when implementing it in home screen
@@ -90,5 +90,5 @@ class Distress {
   }
 
   @override
-  String toString() => 'New $distressType at $schoolId. Message: $message';
+  String toString() => 'New $distressType at $schoolId. Message: $message. Location: ${location.latitude}, ${location.longitude}';
 }
