@@ -46,9 +46,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget build(BuildContext context) {
-    //Responsive scaling widget init
-    ScreenUtil.instance = ScreenUtil(width: 360.0, height: 596.5)
-      ..init(context);
 
     /// HCBE Logo
     final logo = Hero(
