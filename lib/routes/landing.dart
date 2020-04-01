@@ -13,16 +13,16 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     //Responsive scaling widget init
-    ScreenUtil.instance = ScreenUtil(width: 360.0, height: 596.5)
-      ..init(context);
+    //If you want to set the font size is scaled according to the system's "font size" assist option
+    ScreenUtil.init(context, width: 360, height: 596.5, allowFontScaling: true);
 
     /// HCBE Alert App Logo for Landing Page
     final logo = Container(
-      padding: EdgeInsets.only(top: ScreenUtil.getInstance().setSp(25.0)),
+      padding: EdgeInsets.only(top: ScreenUtil().setSp(25.0)),
       child: Center(
         child: Image.asset(
           'assets/logo.png',
-          height: ScreenUtil.getInstance().setHeight(200),
+          height: ScreenUtil().setHeight(200),
         ),
       ),
     );
@@ -30,9 +30,9 @@ class _LandingPageState extends State<LandingPage> {
     final registerPage = Container(
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(
-        left: ScreenUtil.getInstance().setWidth(30),
-        right: ScreenUtil.getInstance().setWidth(30),
-        top: ScreenUtil.getInstance().setHeight(20),
+        left: ScreenUtil().setWidth(30),
+        right: ScreenUtil().setWidth(30),
+        top: ScreenUtil().setHeight(20),
       ),
       alignment: Alignment.center,
       child: Row(
@@ -45,15 +45,15 @@ class _LandingPageState extends State<LandingPage> {
               borderSide: BorderSide(
                 color: Colors.white, //Color of the border
                 style: BorderStyle.solid, //Style of the border
-                width: ScreenUtil.getInstance()
+                width: ScreenUtil()
                     .setWidth(0.8), //width of the border
               ),
               highlightedBorderColor: Colors.white,
               onPressed: () => pushPage(context, RegisterPage()),
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  vertical: ScreenUtil.getInstance().setHeight(20.0),
-                  horizontal: ScreenUtil.getInstance().setWidth(20.0),
+                  vertical: ScreenUtil().setHeight(20.0),
+                  horizontal: ScreenUtil().setWidth(20.0),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,9 +78,9 @@ class _LandingPageState extends State<LandingPage> {
     final loginPage = Container(
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(
-        left: ScreenUtil.getInstance().setWidth(30),
-        right: ScreenUtil.getInstance().setWidth(30),
-        top: ScreenUtil.getInstance().setHeight(30),
+        left: ScreenUtil().setWidth(30),
+        right: ScreenUtil().setWidth(30),
+        top: ScreenUtil().setHeight(30),
       ),
       alignment: Alignment.center,
       child: Row(
@@ -93,8 +93,8 @@ class _LandingPageState extends State<LandingPage> {
             onPressed: () => pushPage(context, LoginPage()),
             child: Container(
               padding: EdgeInsets.symmetric(
-                vertical: ScreenUtil.getInstance().setHeight(20.0),
-                horizontal: ScreenUtil.getInstance().setWidth(20.0),
+                vertical: ScreenUtil().setHeight(20.0),
+                horizontal: ScreenUtil().setWidth(20.0),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +132,7 @@ class _LandingPageState extends State<LandingPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               logo,
-              SizedBox(height: ScreenUtil.getInstance().setHeight(12)),
+              SizedBox(height: ScreenUtil().setHeight(12)),
               registerPage,
               loginPage
             ],
