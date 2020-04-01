@@ -1,5 +1,4 @@
 import 'package:location/location.dart';
-import 'package:location_permissions/location_permissions.dart';
 
 class LocationInit {
   static initLocation() async {
@@ -16,10 +15,9 @@ class LocationInit {
       }
     }
 
-    _permissionGranted = await LocationPermissions().checkPermissionStatus();
+    _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await LocationPermissions().requestPermissions();
-      ;
+      _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
         return;
       }
