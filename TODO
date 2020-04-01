@@ -1,2 +1,6 @@
 for v2, add an option to designate code blue responders. The responders will be alerted if a code blue occurs along with the school admins
 v2 teachers can select their current status(Green, Yellow, Red) in app to match with sliding cards under doors physically
+obfuscate code before release https://flutter.dev/docs/deployment/obfuscate
+make each tab ListView each page in schoolAdmin and set scrolling key to control scrolling and padding at bottom. Dispose all page states on sign out
+
+future authentication changes: https://stackoverflow.com/questions/45353730/firebase-login-with-flutter-using-onauthstatechanged/50632612#50632612
