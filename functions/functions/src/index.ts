@@ -1,11 +1,11 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import axios from 'axios';
+//import axios from 'axios';
 
 admin.initializeApp();
 
 const fcm = admin.messaging();
-const db = admin.firestore();
+//const db = admin.firestore();
 
 export const sendToTopic = functions.firestore
   .document('alerts/{alertId}')
@@ -54,7 +54,7 @@ export const sendToTopic = functions.firestore
 /**
  * Will get the school id of a school where an alert in triggered and send
  * an alert to users who have opted in to receiving text alerts from the school
- */
+ 
 export const sendTextNotif = functions.firestore
   .document('alerts/{alertId}')
   .onCreate(async (snapshot) => {
@@ -108,7 +108,7 @@ export const sendTextNotif = functions.firestore
     /**
      * Will now iterate over the TextAlertsUserNumbers Array and 
      * send a text 
-     */
+     *
     for (var i in textAlertsUserNumbers) {
       //Send number to textserver with message
       axios.post('https://textalerts.herokuapp.com/text', {
@@ -119,4 +119,4 @@ export const sendTextNotif = functions.firestore
       })
     }
 
-  });
+  });*/
