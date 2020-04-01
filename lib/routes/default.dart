@@ -11,6 +11,7 @@ import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/distress_dialog.dart';
 import 'package:hcbe_alerts/widgets/drawer.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class DefaultPage extends StatefulWidget {
   _DefaultPageState createState() => _DefaultPageState();
@@ -20,7 +21,7 @@ class _DefaultPageState extends State<DefaultPage> {
   StateModel appState;
   bool _loadingVisible = false;
   String _currentCode = "";
-  String _currentCodeImg = "assets/code_green.png";
+  Icon _currentCodeImg;
   String _currentSchoolName = "";
 
   Widget build(BuildContext context) {
@@ -49,49 +50,55 @@ class _DefaultPageState extends State<DefaultPage> {
       }
     }
 
-    final activeIntruder = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Active Intruder", "intruder");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.grey,
-        child: Text("Active Intruder"),
+    final activeIntruder = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Active Intruder", "intruder");
+      },
+      padding: EdgeInsets.symmetric(vertical: 6),
+      color: (Theme.of(context).brightness == Brightness.dark)
+          ? Colors.purple
+          : Color(0XFFd05ce3),
+      child: Text("Active Intruder"),
     );
-    final codeRed = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Code Red", "red");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.red,
-        child: Text("Code Red"),
+    final codeRed = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Code Red", "red");
+      },
+      padding: EdgeInsets.symmetric(vertical: 6),
+      color: Colors.red,
+      child: Text("Code Red"),
     );
-    final codeYellow = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Code Yellow", "yellow");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.yellow,
-        child: Text("Code Yellow"),
+    final codeYellow = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Code Yellow", "yellow");
+      },
+      padding: EdgeInsets.symmetric(vertical: 12),
+      color: Color(0xFFffc107),
+      child: Text("Code Yellow"),
     );
-    final codeBlue = SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        onPressed: () {
-          _confirmAlertTrigger(context, "Code Blue", "blue");
-        },
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Colors.blue,
-        child: Text("Code Blue"),
+    final codeBlue = RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
+      elevation: 5,
+      onPressed: () {
+        _confirmAlertTrigger(context, "Code Blue", "blue");
+      },
+      padding: EdgeInsets.symmetric(vertical: 4),
+      color: Colors.blue,
+      child: Text("Code Blue"),
     );
 
     final activeIntruderProcedures = Column(
@@ -466,134 +473,6 @@ class _DefaultPageState extends State<DefaultPage> {
     ]);
     final codeGreenProcedures = Container();
 
-    /// default build for when the schoolAlertActive is false
-    initBuild() {
-      return ListView(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-        children: <Widget>[
-          Center(
-            child: AutoSizeText(
-              _currentSchoolName,
-              style: Theme.of(context).textTheme.headline.copyWith(
-                    fontSize: 22,
-                  ),
-              minFontSize: 16,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(height: 12.0),
-          Align(
-            alignment: Alignment.center,
-            child: Hero(
-              tag: 'code image',
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: 90.0,
-                child: ClipOval(
-                  child: Image.asset(
-                    _currentCodeImg,
-                    fit: BoxFit.cover,
-                    width: 160.0,
-                    height: 160.0,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Center(
-              child: Text("Currently active: " + _currentCode,
-                  style: TextStyle(fontWeight: FontWeight.bold))),
-          Align(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 10.0),
-                activeIntruder,
-                SizedBox(height: 10.0),
-                codeRed,
-                SizedBox(height: 10.0),
-                codeYellow,
-                SizedBox(height: 10.0),
-                codeBlue,
-              ],
-            ),
-          ),
-        ],
-      );
-    }
-
-    /// if schoolAlertActive is true this build is returned
-    alertActiveBuild(AsyncSnapshot snapshot) {
-      var doc = snapshot.data;
-      Widget _codeProcedures;
-
-      switch (doc["schoolAlertState"]) {
-        case "red":
-          _codeProcedures = codeRedProcedures;
-          break;
-        case "blue":
-          _codeProcedures = codeBlueProcedures;
-          break;
-        case "intruder":
-          _codeProcedures = activeIntruderProcedures;
-          break;
-        case "yellow":
-          _codeProcedures = codeYellowProcedures;
-          break;
-        default:
-          _codeProcedures = codeGreenProcedures;
-      }
-      return ListView(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-        children: <Widget>[
-          Center(
-            child: AutoSizeText(
-              _currentSchoolName,
-              style: Theme.of(context).textTheme.headline.copyWith(
-                    fontSize: 22,
-                  ),
-              minFontSize: 16,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(height: 16.0),
-          Align(
-            child: Hero(
-              tag: 'code image',
-              child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 90.0,
-                  child: ClipOval(
-                    child: Image.asset(
-                      _currentCodeImg,
-                      fit: BoxFit.cover,
-                      width: 160.0,
-                      height: 160.0,
-                    ),
-                  )),
-            ),
-          ),
-          Center(
-            child: Text("Currently active: " + _currentCode,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          SizedBox(height: 15.0),
-          Column(
-            children: <Widget>[
-              Text(
-                _currentCode + " Quick Reference",
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20),
-                textAlign: TextAlign.left,
-              ),
-              _codeProcedures,
-            ],
-          ),
-        ],
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -631,13 +510,32 @@ class _DefaultPageState extends State<DefaultPage> {
               }
               var doc = snapshot.data;
 
-              ///TODO add the images for the other codes
               switch (doc["schoolAlertState"]) {
+                case "intruder":
+                  _currentCodeImg = Icon(LineAwesomeIcons.exclamation_triangle,
+                      color: (Theme.of(context).brightness == Brightness.dark)
+                          ? Colors.purple
+                          : Color(0XFFd05ce3),
+                      size: 120);
+                  break;
                 case "red":
-                  _currentCodeImg = 'assets/code_red.png';
+                  _currentCodeImg = Icon(LineAwesomeIcons.times_circle_o,
+                      color: Colors.red, size: 120);
+                  break;
+                case "yellow":
+                  _currentCodeImg = Icon(LineAwesomeIcons.minus_circle,
+                      color: Color(0xFFffc107), size: 120);
+                  break;
+                case "blue":
+                  _currentCodeImg = Icon(LineAwesomeIcons.plus_circle,
+                      color: Colors.blue, size: 120);
                   break;
                 default:
-                  _currentCodeImg = 'assets/code_green.png';
+                  _currentCodeImg = Icon(
+                    LineAwesomeIcons.check_circle,
+                    color: Colors.green,
+                    size: 120,
+                  );
               }
 
               switch (doc["schoolAlertState"]) {
@@ -657,11 +555,97 @@ class _DefaultPageState extends State<DefaultPage> {
                   _currentCode = "Code Green";
               }
               _currentSchoolName = doc["name"];
-              if (doc["schoolAlertActive"]) {
-                return alertActiveBuild(snapshot);
-              } else {
-                return initBuild();
+
+              Widget _codeProcedures;
+
+              switch (doc["schoolAlertState"]) {
+                case "red":
+                  _codeProcedures = codeRedProcedures;
+                  break;
+                case "blue":
+                  _codeProcedures = codeBlueProcedures;
+                  break;
+                case "intruder":
+                  _codeProcedures = activeIntruderProcedures;
+                  break;
+                case "yellow":
+                  _codeProcedures = codeYellowProcedures;
+                  break;
+                default:
+                  _codeProcedures = codeGreenProcedures;
               }
+              return ListView(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                children: <Widget>[
+                  Center(
+                    child: AutoSizeText(
+                      _currentSchoolName,
+                      style: Theme.of(context).textTheme.headline.copyWith(
+                            fontSize: 22,
+                          ),
+                      minFontSize: 16,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  Card(
+                    elevation: 20,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 7, horizontal: 7),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: _currentCodeImg,
+                          ),
+                          Center(
+                            child: Text(
+                              "Currently active: " + _currentCode,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  (!doc["schoolAlertActive"])
+                      ? GridView.count(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.85,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 30, horizontal: 7),
+                          children: <Widget>[
+                            activeIntruder,
+                            codeRed,
+                            codeYellow,
+                            codeBlue,
+                          ],
+                        )
+                      : Column(
+                          children: <Widget>[
+                            SizedBox(width: 30),
+                            Text(
+                              _currentCode + " Quick Reference",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 20),
+                              textAlign: TextAlign.left,
+                            ),
+                            _codeProcedures,
+                          ],
+                        ),
+                ],
+              );
             },
           ),
           inAsyncCall: _loadingVisible),
