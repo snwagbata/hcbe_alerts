@@ -41,8 +41,8 @@ ThemeData buildTheme() {
         color: const Color(0xFF000000),
       ),
       // Make sure bg color us always the same with scaffold bg color
-      backgroundColor: const Color(0xFFF0F0F0),
-      scaffoldBackgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: const Color(0xFFE3E4EC),
+      scaffoldBackgroundColor: const Color(0xFFE3E4EC),
       buttonColor: Colors.white,
       toggleableActiveColor: const Color(0xff006fc7),
       indicatorColor: const Color(0xff006fc7),
