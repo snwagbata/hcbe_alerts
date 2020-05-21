@@ -131,14 +131,15 @@ class _StateWidgetState extends State<StateWidget> {
     Navigator.pop(context);
     // Delay 2 seconds and then ask for permissions
     Future.delayed(Duration(seconds: 3), LocationInit.initLocation());
-    if (Platform.isIOS) {
-      String schoolId = user?.userSchoolId();
-      FirebaseMessaging()
-          .requestNotificationPermissions(IosNotificationSettings());
-      FirebaseMessaging().onIosSettingsRegistered.listen((data) {
-        FirebaseMessaging().subscribeToTopic(schoolId);
-      });
-    }
+    String schoolId = user?.userSchoolId();
+    FirebaseMessaging().requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    FirebaseMessaging().onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+       FirebaseMessaging().subscribeToTopic(schoolId);
+    });
   }
 
   @override
