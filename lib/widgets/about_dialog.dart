@@ -24,7 +24,7 @@ class _AboutDialog extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final name = 'HCBE Alerts'; // Don't need to localize.
-    final legalese = '© 2020 SKY Tech'; // Don't need to localize.
+    final legalese = '©2020 Healersoft, Inc'; // Don't need to localize.
 
     return AlertDialog(
       content: Container(
@@ -36,7 +36,7 @@ class _AboutDialog extends StatelessWidget {
             FutureBuilder(
               future: getVersionNumber(),
               builder: (context, snapshot) => Text(
-                snapshot.hasData ? '$name ${snapshot.data}' : '$name', style: Theme.of(context).textTheme.title,
+                snapshot.hasData ? '$name ${snapshot.data}' : '$name', style: Theme.of(context).textTheme.headline6,
               ),
             ),
             SizedBox(height: 24),
