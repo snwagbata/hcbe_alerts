@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class PlatformWidget extends StatelessWidget {
   Widget buildCupertinoWidget(BuildContext context);
@@ -32,7 +31,6 @@ class DistressAlertDialog extends PlatformWidget {
   final String schoolId;
   final String cancelActionText;
   final String defaultActionText;
-  final TextEditingController _alertMessage = TextEditingController();
 
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
@@ -51,26 +49,8 @@ class DistressAlertDialog extends PlatformWidget {
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoAlertDialog(
       title: Text('Initiate ' + title + '?'),
-      content: ConstrainedBox(
-        child: Container(
-          child: ListView(
-            children: <Widget>[
-              Text(
-                "Are you sure you want to initiate a " + title + " alert?",
-              ),
-              SizedBox(height: 2.0),
-              TextField(
-                maxLines: 3,
-                controller: _alertMessage,
-                decoration: InputDecoration(
-                  hintText: "(OPTIONAL) Please provide further details",
-                  hintMaxLines: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-        constraints: BoxConstraints(minHeight: 135, maxHeight: 150),
+      content: Text(
+        "Are you sure you want to initiate the " + title + " alert?",
       ),
       actions: _buildActions(context),
     );
@@ -83,26 +63,8 @@ class DistressAlertDialog extends PlatformWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
-      content: ConstrainedBox(
-        child: Container(
-          child: ListView(
-            children: <Widget>[
-              Text(
-                "Are you sure you want to initiate a " + title + " alert?",
-              ),
-              SizedBox(height: 2.0),
-              TextField(
-                maxLines: 3,
-                controller: _alertMessage,
-                decoration: InputDecoration(
-                  hintText: "(OPTIONAL) Please provide further details",
-                  hintMaxLines: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-        constraints: BoxConstraints(minHeight: 135, maxHeight: 150),
+      content: Text(
+        "Are you sure you want to initiate the " + title + " alert?",
       ),
       actions: _buildActions(context),
     );
@@ -130,8 +92,6 @@ class DistressAlertDialog extends PlatformWidget {
           style: TextStyle(fontSize: 16),
         ),
         onPressed: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('alertMessage', _alertMessage.text);
           Navigator.of(context).pop(true);
         },
       ),
