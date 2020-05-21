@@ -5,24 +5,24 @@ ThemeData buildTheme() {
   // in this method:
   TextTheme _buildTextTheme(TextTheme base) {
     return base.copyWith(
-      headline: base.headline.copyWith(
+      headline1: base.headline1.copyWith(
         fontFamily: 'Merriweather',
         color: const Color(0xFF101010),
       ),
-      title: base.title.copyWith(
+      headline5: base.headline5.copyWith(
         fontFamily: 'Merriweather',
         color: const Color(0xFF101010),
       ),
       caption: base.caption.copyWith(
         color: const Color(0xFF101010),
       ),
-      body1: base.body1.copyWith(
-        color: const Color(0xFF101010),
-      ),
-      body2: base.body2.copyWith(
+      bodyText1: base.bodyText1.copyWith(
         color: const Color(0x8A000000),
       ),
-      subhead: base.subhead.copyWith(
+      bodyText2: base.bodyText2.copyWith(
+        color: const Color(0xFF101010),
+      ),
+      subtitle2: base.subtitle2.copyWith(
         color: const Color(0xFF101010),
       ),
     );
@@ -40,9 +40,6 @@ ThemeData buildTheme() {
       iconTheme: IconThemeData(
         color: const Color(0xFF000000),
       ),
-      // Make sure bg color us always the same with scaffold bg color
-      backgroundColor: const Color(0xFFE3E4EC),
-      scaffoldBackgroundColor: const Color(0xFFE3E4EC),
       buttonColor: Colors.white,
       toggleableActiveColor: const Color(0xff006fc7),
       indicatorColor: const Color(0xff006fc7),
@@ -75,23 +72,25 @@ ThemeData buildDarkTheme() {
   // in this method:
   TextTheme _buildTextTheme(TextTheme base) {
     return base.copyWith(
-      headline: base.headline.copyWith(
+      headline1: base.headline1.copyWith(
         fontFamily: 'Merriweather',
         color: const Color(0xFFFFFFFF),
       ),
-      title: base.title.copyWith(
+      headline5: base.headline5.copyWith(
         fontFamily: 'Merriweather',
         color: const Color(0xFFFFFFFF),
       ),
       caption: base.caption.copyWith(
         color: const Color(0xFFFFFFFF),
       ),
-      body1: base.body1.copyWith(
+      bodyText1: base.bodyText1.copyWith(
         color: const Color(0xFFFFFFFF),
       ),
-      body2: base.body2.copyWith(color: const Color(0x8AFFFFFF)),
-      subhead: base.subhead.copyWith(
+      bodyText2: base.bodyText2.copyWith(
         color: const Color(0xFFFFFFFF),
+      ),
+      subtitle2: base.subtitle2.copyWith(
+        color: const Color(0x8AFFFFFF),
       ),
     );
   }
@@ -105,9 +104,6 @@ ThemeData buildDarkTheme() {
     primaryColor: const Color(0xff00457c),
     accentColor: const Color(0xff006fc7),
     brightness: Brightness.dark,
-    // Make sure bg color us always the same with scaffold bg color
-    backgroundColor: const Color(0xEE000000),
-    scaffoldBackgroundColor: const Color(0xEE000000),
     buttonColor: Colors.white,
     toggleableActiveColor: const Color(0xff006fc7),
     indicatorColor: const Color(0xff006fc7),
