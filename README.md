@@ -1,7 +1,6 @@
 # HCBE Alerts
-A new Flutter application.
 
-#Project Tree
+A new Flutter project.
 
 ## Getting Started
 
