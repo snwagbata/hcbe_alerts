@@ -20,7 +20,6 @@ class SchoolAdminPage extends StatefulWidget {
 
 class _SchoolAdminPageState extends State<SchoolAdminPage> {
   StateModel appState;
-  bool _loadingVisible = false;
   String _currentCode = "";
   Icon _currentCodeImg;
   String _currentSchoolName = "";
@@ -29,12 +28,6 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
     appState = StateWidget.of(context).state;
     final schoolId = appState?.user?.school ?? '';
     final userId = appState?.user?.getUserId();
-
-    if (appState.isLoading) {
-      _loadingVisible = true;
-    } else {
-      _loadingVisible = false;
-    }
 
     Future<void> _confirmCodeGreen(BuildContext context, String alertId) async {
       final bool codeGreen = await DistressAlertAdminDialog(
@@ -198,93 +191,110 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
                 _currentCode = "Code Green";
             }
             _currentSchoolName = doc["name"];
-            return ListView(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              children: <Widget>[
-                SizedBox(height: 4.0),
-                Center(
-                  child: AutoSizeText(
-                    _currentSchoolName,
-                    style: Theme.of(context).textTheme.headline.copyWith(
-                          fontSize: 22,
-                        ),
-                    minFontSize: 16,
-                    maxLines: 2,
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                SizedBox(height: 4.0),
-                Card(
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 7),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: _currentCodeImg,
-                        ),
-                        Center(
-                          child: Text(
-                            "Currently active: " + _currentCode,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
+            return Builder(
+              // This Builder is needed to provide a BuildContext that is "inside"
+              // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+              // find the NestedScrollView.
+              builder: (BuildContext context) {
+                return CustomScrollView(
+                  key: PageStorageKey("home"),
+                  slivers: <Widget>[
+                    SliverOverlapInjector(
+                      // This is the flip side of the SliverOverlapAbsorber above.
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
                     ),
-                  ),
-                ),
-                doc["schoolAlertActive"]
-                    ? Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: 10.0),
-                            _codeGreen(doc["curAlertId"]),
-                          ],
-                        ),
-                      )
-                    : GridView.count(
-                        physics: ScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        crossAxisCount: 2,
-                        childAspectRatio: 1.85,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 7, horizontal: 7),
-                        children: <Widget>[
-                          activeIntruder,
-                          codeRed,
-                          codeYellow,
-                          codeBlue,
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                SizedBox(height: 4.0),
+                                Center(
+                                  child: AutoSizeText(
+                                    _currentSchoolName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        .copyWith(
+                                          fontSize: 22,
+                                        ),
+                                    minFontSize: 16,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                SizedBox(height: 4.0),
+                                Card(
+                                  elevation: 6,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 7, horizontal: 7),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: _currentCodeImg,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            "Currently active: " + _currentCode,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                doc["schoolAlertActive"]
+                                    ? Align(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: <Widget>[
+                                            SizedBox(height: 10.0),
+                                            _codeGreen(doc["curAlertId"]),
+                                          ],
+                                        ),
+                                      )
+                                    : GridView.count(
+                                        physics: ScrollPhysics(),
+                                        shrinkWrap: true,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 4/3,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 7, horizontal: 7),
+                                        children: <Widget>[
+                                          activeIntruder,
+                                          codeRed,
+                                          codeYellow,
+                                          codeBlue,
+                                        ],
+                                      ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-              ],
+                    ),
+                  ],
+                );
+              },
             );
           }
 
           return Center(
             child: Text(
                 "We could not find a school associated with you. Please change your school."),
-          );
-        },
-      );
-    }
-
-    _buildAlertsList(BuildContext context, List<DocumentSnapshot> snapshots) {
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: snapshots.length,
-        physics: ClampingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          return AlertCard(
-            alertDetails: Distress.fromDocument(snapshots[index]),
           );
         },
       );
@@ -312,13 +322,38 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
           }
 
           if (snapshot.hasData) {
-            return _buildAlertsList(context, snapshot.data.documents);
+            return Builder(
+              builder: (BuildContext context) {
+                return CustomScrollView(
+                  key: PageStorageKey("alertList"),
+                  slivers: <Widget>[
+                    SliverOverlapInjector(
+                      // This is the flip side of the SliverOverlapAbsorber above.
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return AlertCard(
+                            alertDetails: Distress.fromDocument(
+                              snapshot.data.documents[index],
+                            ),
+                          );
+                        },
+                        childCount: snapshot.data.documents.length,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
           }
 
           return Center(
             child: Text(
               "No alerts have been activated yet.",
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           );
         },
@@ -337,52 +372,56 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              new SliverAppBar(
-                title: Text("HCBE Alerts"),
-                pinned: true,
-                floating: true,
-                forceElevated: innerBoxIsScrolled,
-                actions: <Widget>[
-                  IconButton(
-                    icon: Platform.isIOS
-                        ? Icon(
-                            CupertinoIcons.settings,
-                          )
-                        : Icon(
-                            Icons.settings,
-                          ), // icon is 48px widget.
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/settings');
-                    },
-                  ),
-                ],
-                bottom: new TabBar(
-                  tabs: [
-                    Tab(
-                      icon: Icon(
-                        Icons.home,
-                        semanticLabel: "Home",
-                      ),
-                    ),
-                    Tab(
-                      icon: Icon(
-                        Icons.notification_important,
-                        semanticLabel: "Alerts List",
-                      ),
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  title: Text("HCBE Alerts"),
+                  floating: true,
+                  pinned: true,
+                  snap: false,
+                  primary: true,
+                  forceElevated: innerBoxIsScrolled,
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Platform.isIOS
+                          ? Icon(
+                              CupertinoIcons.settings,
+                            )
+                          : Icon(
+                              Icons.settings,
+                            ), // icon is 48px widget.
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/settings');
+                      },
                     ),
                   ],
+                  bottom: TabBar(
+                    tabs: [
+                      Tab(
+                        icon: Icon(
+                          Icons.home,
+                          semanticLabel: "Home",
+                        ),
+                      ),
+                      Tab(
+                        icon: Icon(
+                          Icons.notification_important,
+                          semanticLabel: "Alerts List",
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ];
           },
-          body: LoadingScreen(
-              child: TabBarView(
-                children: [
-                  _home(),
-                  _buildSchoolAlertList(),
-                ],
-              ),
-              inAsyncCall: _loadingVisible),
+          body: TabBarView(
+            children: [
+              _home(),
+              _buildSchoolAlertList(),
+            ],
+          ),
         ),
       ),
     );
