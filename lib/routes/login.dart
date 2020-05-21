@@ -111,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
     final forgotLabel = FlatButton(
       child: Text(
         'Forgot password?',
+        style: Theme.of(context).textTheme.bodyText1,
       ),
       onPressed: () {
         Navigator.pushNamed(context, '/forgot-password');

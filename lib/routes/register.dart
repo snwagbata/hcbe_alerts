@@ -40,13 +40,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _autoValidate = false;
   bool _loadingVisible = false;
+  bool _passwordVisible;
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _passwordVisible = true;
+    });
   }
 
   Widget build(BuildContext context) {
-
     /// HCBE Logo
     final logo = Hero(
       tag: 'logo',
@@ -130,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final password = TextFormField(
       autofocus: false,
-      obscureText: true,
+      obscureText: _passwordVisible,
       controller: _password,
       validator: Validator.validatePassword,
       textInputAction: TextInputAction.done,
@@ -144,11 +147,21 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Platform.isIOS
               ? Icon(CupertinoIcons.padlock,
                   color: Theme.of(context).iconTheme.color)
-              : Icon(Icons.lock,
-                  color: Theme.of(context)
-                      .iconTheme
-                      .color), // icon is 48px widget.
-        ), // icon is 48px widget.
+              : Icon(Icons.lock, color: Theme.of(context).iconTheme.color),
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            // Based on passwordVisible state choose the icon
+            _passwordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          onPressed: () {
+            // Update the state i.e. toogle the state of passwordVisible variable
+            setState(() {
+              _passwordVisible = !_passwordVisible;
+            });
+          },
+        ),
         labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
       ),
@@ -175,7 +188,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final signInLabel = FlatButton(
       child: Text(
-        'Have an Account? Sign In.',
+        'Have an account? Sign in.',
+        style: Theme.of(context).textTheme.bodyText1,
       ),
       onPressed: () {
         popPushPage(context, LoginPage());
