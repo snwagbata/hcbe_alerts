@@ -141,7 +141,8 @@ class _DefaultPageState extends State<DefaultPage> {
                     text:
                         " open the door for anyone. Admin and staff will opwn with a key if entry is needed.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -196,7 +197,8 @@ class _DefaultPageState extends State<DefaultPage> {
                     text:
                         " allow any student calls. Have students turn their phones off so no sounds are made.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -224,7 +226,8 @@ class _DefaultPageState extends State<DefaultPage> {
                 ),
                 TextSpan(text: " reason.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -284,7 +287,8 @@ class _DefaultPageState extends State<DefaultPage> {
                     text:
                         " open the door for anyone. Admin and staff will opwn with a key if entry is needed.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -339,7 +343,8 @@ class _DefaultPageState extends State<DefaultPage> {
                     text:
                         " allow any student calls. Have students turn their phones off so no sounds are made.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -367,7 +372,8 @@ class _DefaultPageState extends State<DefaultPage> {
                 ),
                 TextSpan(text: " reason.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -442,7 +448,8 @@ class _DefaultPageState extends State<DefaultPage> {
                 ),
                 TextSpan(text: " reason.")
               ],
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 15),
             ),
           ),
         ),
@@ -575,12 +582,12 @@ class _DefaultPageState extends State<DefaultPage> {
                   _codeProcedures = codeGreenProcedures;
               }
               return ListView(
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 12),
                 children: <Widget>[
                   Center(
                     child: AutoSizeText(
                       _currentSchoolName,
-                      style: Theme.of(context).textTheme.headline.copyWith(
+                      style: Theme.of(context).textTheme.headline5.copyWith(
                             fontSize: 22,
                           ),
                       minFontSize: 16,
@@ -590,7 +597,7 @@ class _DefaultPageState extends State<DefaultPage> {
                   ),
                   SizedBox(height: 12.0),
                   Card(
-                    elevation: 20,
+                    elevation: 6,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     ),
@@ -620,7 +627,7 @@ class _DefaultPageState extends State<DefaultPage> {
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                           crossAxisCount: 2,
-                          childAspectRatio: 1.85,
+                          childAspectRatio: 4 / 3,
                           padding:
                               EdgeInsets.symmetric(vertical: 30, horizontal: 7),
                           children: <Widget>[
@@ -633,15 +640,34 @@ class _DefaultPageState extends State<DefaultPage> {
                       : Column(
                           children: <Widget>[
                             SizedBox(width: 30),
-                            Text(
-                              _currentCode + " Quick Reference",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .body1
-                                  .copyWith(fontSize: 20),
-                              textAlign: TextAlign.left,
+                            Card(
+                              child: TextField(
+                                enableSuggestions: true,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  labelText: '',
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.send),
+                                    onPressed: () {
+                                      // send alert message update to firebase and display flushbar with "message sent" message
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
-                            _codeProcedures,
+                            Card(
+                              elevation: 4,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    _currentCode + " Quick Reference",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  _codeProcedures,
+                                ],
+                              ),
+                            )
                           ],
                         ),
                 ],
