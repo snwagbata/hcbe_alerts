@@ -53,7 +53,7 @@ class AlertCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       _getDistressName(alertDetails.distressType),
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                     Divider(),
                     Wrap(
@@ -101,7 +101,7 @@ class AlertDetailChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return RawChip(
       label: Text(label),
-      labelStyle: Theme.of(context).textTheme.body1,
+      labelStyle: Theme.of(context).textTheme.bodyText2,
       avatar: Icon(
         iconData,
         size: 14.0,
