@@ -34,31 +34,41 @@ class Alerts {
       timeTriggered: new DateTime.now(),
       message: _alertMessage,
     );
-    Firestore.instance
-        .collection("alerts")
-        .add(sendToDB.toJson())
-        .then((docRef) async {
-      //update location
-      GeoPoint location;
-      try {
-        location = await _getLocation();
-      } catch (e) {
-        //if analytics is ever used. here is one place to use it
-      }
-      //update alert id, location, and timestamp
-      Firestore.instance
-          .collection("alerts")
-          .document(docRef.documentID)
-          .updateData({
-        "location": location,
-        "alertId": docRef.documentID,
-        "timestamp": FieldValue.serverTimestamp(),
-      });
-      Firestore.instance
-          .collection("schools")
-          .document(schoolId)
-          .updateData({"curAlertId": docRef.documentID});
-    });
+    Firestore.instance.collection("alerts").add(sendToDB.toJson()).then(
+      (docRef) async {
+        ///Update school current alert
+        Firestore.instance.collection("schools").document(schoolId).updateData(
+          {"curAlertId": docRef.documentID},
+        );
+
+        ///create an alert document in alerts collection
+        Firestore.instance
+            .collection("alerts")
+            .document(docRef.documentID)
+            .updateData(
+          {
+            "alertId": docRef.documentID,
+            "timestamp": FieldValue.serverTimestamp(),
+          },
+        );
+
+        //update location
+        GeoPoint location;
+        try {
+          location = await _getLocation();
+        } catch (e) {
+          //if analytics is ever used. here is one place to use it
+        }
+        Firestore.instance
+            .collection("alerts")
+            .document(docRef.documentID)
+            .updateData(
+          {
+            "location": location,
+          },
+        );
+      },
+    );
 
     await prefs.setString('alertMessage', "");
   }
@@ -78,7 +88,7 @@ class Alerts {
 
   /// Updates current active alert with message. Only works when current school alert is not `green`
   ///
-  static void updateAlertMessages(String message, String alertId) {} 
+  static void updateAlertMessages(String message, String alertId) {}
 
   ///
   ///
