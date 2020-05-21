@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1053554783343:android:ad127027d6f1eec9b7499a",
+        "mobilesdk_app_id": "1:1053554783343:android:64ca78fadf8af20cb7499a",
         "android_client_info": {
-          "package_name": "io.skytech.hcbe_alerts"
+          "package_name": "com.healersoft.hcbe_alerts"
         }
       },
       "oauth_client": [
