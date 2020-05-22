@@ -32,9 +32,6 @@ class Distress {
   /// Distress type, ex: red, yellow.
   final String distressType;
 
-  /// A message to explain situation, possibly null.
-  String message;
-
   /// Device location of user
   final GeoPoint location;
 
@@ -55,7 +52,6 @@ class Distress {
     @required this.timeTriggered,
     this.timeResolved,
     this.location,
-    this.message,
     
   }) : assert(schoolId != null && distressType != null && triggeredBy != null);
 
@@ -66,7 +62,6 @@ class Distress {
         distressId: json["alertId"],
         distressType: json["alertType"],
         schoolId: json["schoolId"],
-        message: json["message"],
         timeTriggered: json["timetriggered"],
         timeResolved: json["timeResolved"],
         location: json["location"],
@@ -78,7 +73,6 @@ class Distress {
     "alertId" : distressId,
     "alertType" : distressType,
     "schoolId" : schoolId,
-    "message" : message,
     "timetriggered" : timeTriggered,
     "timeResolved" : timeResolved,
     "location" : location 
@@ -90,5 +84,5 @@ class Distress {
   }
 
   @override
-  String toString() => 'New $distressType at $schoolId. Message: $message. Location: ${location.latitude}, ${location.longitude}';
+  String toString() => 'New $distressType at $schoolId. Location: ${location.latitude}, ${location.longitude}';
 }
