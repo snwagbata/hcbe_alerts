@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
-
 void showAboutDialog({
   @required BuildContext context,
 }) {
@@ -14,7 +13,7 @@ void showAboutDialog({
   );
 }
 
-Future<String> getVersionNumber() async {
+getVersionNumber() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   return packageInfo.version;
 }
@@ -22,9 +21,9 @@ Future<String> getVersionNumber() async {
 class _AboutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final name = 'HCBE Alerts'; // Don't need to localize.
-    final legalese = '©2020 Healersoft, Inc'; // Don't need to localize.
+    final legalese = '© 2020 Healersoft, Inc'; // Don't need to localize.
+    final versionNum = getVersionNumber();
 
     return AlertDialog(
       content: Container(
@@ -34,9 +33,10 @@ class _AboutDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             FutureBuilder(
-              future: getVersionNumber(),
+              future: versionNum,
               builder: (context, snapshot) => Text(
-                snapshot.hasData ? '$name ${snapshot.data}' : '$name', style: Theme.of(context).textTheme.headline6,
+                snapshot.hasData ? '$name ${snapshot.data}' : '$name',
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
             SizedBox(height: 24),
@@ -55,7 +55,8 @@ class _AboutDialog extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute<void>(
               builder: (context) => Theme(
                 data: Theme.of(context).copyWith(
-                  scaffoldBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  scaffoldBackgroundColor:
+                      Theme.of(context).scaffoldBackgroundColor,
                 ),
                 child: LicensePage(
                   applicationName: name,
