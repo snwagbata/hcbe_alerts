@@ -1,0 +1,63 @@
+name: hcbe_alerts
+description: A new Flutter project.
+
+version: 0.5.9+1
+
+environment:
+  sdk: '>=2.7.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons:
+
+  #firebase
+  firebase_core:
+  firebase_messaging:
+  cloud_firestore:
+  firebase_auth:
+  google_maps_flutter: ^0.5.28+1
+
+  provider:
+  shared_preferences:
+  simple_gravatar:
+
+  flutter_screenutil:
+  
+
+  #for all main pages
+  location: ^3.0.1
+  auto_size_text: ^2.1.0
+  line_awesome_icons: ^1.0.4+2
+
+  #for alertdetail pages
+  intl: ^0.16.1
+  map_launcher: ^0.4.4
+  crypto: ^2.1.3
+  
+  
+  #settings page
+  settings_ui: ^0.3.0
+  app_settings: ^3.0.1
+  package_info: '>=0.4.0+16 <2.0.0'
+  device_info: ^0.4.2+1
+  #flutter_launcher_icons: "^0.7.3"
+  #flutter_native_splash: ^0.1.9
+
+#flutter_icons:
+  #android: "launcher_icon"
+  #ios: true
+  #image_path: "assets/icon/icon.png"
+
+#flutter_native_splash:
+  #image: assets/images/splash.png
+  #color: "42a5f5"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
