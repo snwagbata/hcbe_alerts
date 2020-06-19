@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 // To parse this JSON data, do
 //
@@ -36,11 +36,13 @@ class Distress {
   final GeoPoint location;
 
   /// Current time
-  final dynamic timeTriggered; //= new DateTime.now(); <--- Call that when implementing it in home screen
-  
+  final dynamic
+      timeTriggered; //= new DateTime.now(); <--- Call that when implementing it in home screen
+
   /// Time Distress was resolved
   final dynamic timeResolved;
-    /// Creates a [Distress] with the specified error [code] and optional
+
+  /// Creates a [Distress] with the specified error [code] and optional
   /// [message], and with the optional error [details] which must be a valid
   /// value for the [MethodCodec] involved in the interaction.
   Distress({
@@ -52,9 +54,7 @@ class Distress {
     @required this.timeTriggered,
     this.timeResolved,
     this.location,
-    
   }) : assert(schoolId != null && distressType != null && triggeredBy != null);
-
 
   factory Distress.fromJson(Map<String, dynamic> json) => new Distress(
         active: json["alertActive"],
@@ -68,21 +68,21 @@ class Distress {
       );
 
   Map<String, dynamic> toJson() => {
-    "alertActive" : active,
-    "triggeredBy" : triggeredBy,
-    "alertId" : distressId,
-    "alertType" : distressType,
-    "schoolId" : schoolId,
-    "timetriggered" : timeTriggered,
-    "timeResolved" : timeResolved,
-    "location" : location 
+        "alertActive": active,
+        "triggeredBy": triggeredBy,
+        "alertId": distressId,
+        "alertType": distressType,
+        "schoolId": schoolId,
+        "timetriggered": timeTriggered,
+        "timeResolved": timeResolved,
+        "location": location
       };
-
 
   factory Distress.fromDocument(DocumentSnapshot doc) {
     return Distress.fromJson(doc.data);
   }
 
   @override
-  String toString() => 'New $distressType at $schoolId. Location: ${location.latitude}, ${location.longitude}';
+  String toString() =>
+      'New $distressType at $schoolId. Location: ${location.latitude}, ${location.longitude}';
 }

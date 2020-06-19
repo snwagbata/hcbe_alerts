@@ -21,7 +21,6 @@ class User {
   String email;
   String school;
   String userType;
-  
 
   User({
     this.userId,
@@ -51,13 +50,11 @@ class User {
     return User.fromJson(doc.data);
   }
 
-  String getUserId()
-  {
+  String getUserId() {
     return this.userId;
   }
 
-  String userSchoolId()
-  {
+  String userSchoolId() {
     return this.school;
   }
 }
