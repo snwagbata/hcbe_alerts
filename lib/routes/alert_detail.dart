@@ -63,23 +63,22 @@ class AlertDetail extends StatelessWidget {
           (alertDetail.location != null)
               ? GestureDetector(
                   onTap: () async {
-                    pushPage(
-                      context,
-                      MapView(
-                        latitude: alertDetail.location?.latitude,
-                        longitude: alertDetail.location?.longitude,
-                      ),
-                    );
-
                     /**
+                    Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Map()));
+                  */
+
+                    
                     final availableMaps = await MapLauncher.installedMaps;
                     await availableMaps.first.showMarker(
                       coords: Coords(alertDetail.location?.latitude,
                           alertDetail.location?.longitude),
                       title: _getDistressName(alertDetail.distressType),
-                      description: alertDetail.message,
+                      description: _getDistressName(alertDetail.distressType),
                     ); 
-                    */
+                    
                   },
                   //use shimmer to show that content is supposed to be here is loading
                   child: ClipRRect(
@@ -100,7 +99,7 @@ class AlertDetail extends StatelessWidget {
               : ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.network(
-                    //TODO: local storage of location not found image to increase picture loading time
+                      //TODO: local storage of location not found image to increase picture loading time
                       "https://via.placeholder.com/600x350/000000/FFFFFF/?text=Location+Not+Reported",
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent loadingProgress) {
@@ -110,8 +109,6 @@ class AlertDetail extends StatelessWidget {
                     );
                   }, fit: BoxFit.fill),
                 ),
-
-                
         ],
       ),
     );
