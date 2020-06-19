@@ -1,31 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hcbe_alerts/services/state_widget.dart';
-import 'package:hcbe_alerts/widgets/flushbar.dart';
-import 'package:hcbe_alerts/widgets/platform_alert_dialog.dart';
-import 'package:flutter/services.dart';
+import 'package:hcbe_alerts/routes/admin_alert_detail.dart';
 
 class NavDrawer extends StatelessWidget {
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      bar("Signed out", 2, context);
-      StateWidget.of(context).logOutUser();
-    } on PlatformException {
-      bar('Sign Out failed', 5, context);
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final bool didRequestSignOut = await PlatformAlertDialog(
-      title: 'Sign Out',
-      content: 'Are you sure you want to sign out?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Sign Out',
-    ).show(context);
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
-
   ///Drawer Header with HCBE logo
   final header = DrawerHeader(
     margin: EdgeInsets.zero,
@@ -52,18 +29,56 @@ class NavDrawer extends StatelessWidget {
     ),
   );
 
+  _buildSchoolList() {
+    return StreamBuilder(
+      stream: Firestore.instance.collection('schools').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error);
+        }
+
+        while (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              semanticsLabel: "loading",
+            ),
+          );
+        }
+
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text("${snapshot.data.documents[index].data['name']}"),
+                onTap: () =>
+                    AADetail(snapshot.data.documents[index].data['schoolId']),
+              );
+            },
+          );
+        }
+
+        return Center(
+          child: Text(
+            "Yikes! Seems like no school has been registered yet.",
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: <Widget>[
           header,
-          Divider(),
           ListTile(
-            // leading: Icon(LineIcons.user_times),
-            title: Text('Sign Out'),
-            onTap: () => _confirmSignOut(context),
+            title: Text("Home"),
           ),
+          Divider(),
+          _buildSchoolList(),
         ],
       ),
     );
