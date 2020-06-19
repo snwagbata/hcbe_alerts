@@ -10,6 +10,7 @@ import 'package:hcbe_alerts/services/alerts.dart';
 import 'package:hcbe_alerts/services/state_widget.dart';
 import 'package:hcbe_alerts/widgets/distress_dialog.dart';
 import 'package:hcbe_alerts/widgets/drawer.dart';
+import 'package:hcbe_alerts/widgets/flushbar.dart';
 import 'package:hcbe_alerts/widgets/loading.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -23,6 +24,8 @@ class _DefaultPageState extends State<DefaultPage> {
   String _currentCode = "";
   Icon _currentCodeImg;
   String _currentSchoolName = "";
+  FocusNode _aMessage = FocusNode();
+  TextEditingController _alertMessage = TextEditingController();
 
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
@@ -462,219 +465,247 @@ class _DefaultPageState extends State<DefaultPage> {
         ),
       ],
     );
-    final codeBlueProcedures = Column(children: <Widget>[
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Text(
-          "Remove students from the immediate area and send to a neighboring classroom. Remain with the student in need of help until assistance arrives.",
-          style: TextStyle(fontSize: 15),
+    final codeBlueProcedures = Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "Remove students from the immediate area and send to a neighboring classroom. Remain with the student in need of help until assistance arrives.",
+            style: TextStyle(fontSize: 15),
+          ),
         ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Text(
-          "ALL teachers/classrooms, continue with classs as normal and limit students leaving the room to emergencies only.",
-          style: TextStyle(fontSize: 15),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            "ALL teachers/classrooms, continue with classs as normal and limit students leaving the room to emergencies only.",
+            style: TextStyle(fontSize: 15),
+          ),
         ),
-      ),
-    ]);
-    final codeGreenProcedures = Container();
+      ],
+    );
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 5.0,
-        title: Text('HCBE Alerts'),
-        actions: <Widget>[
-          IconButton(
-            icon: Platform.isIOS
-                ? Icon(
-                    CupertinoIcons.settings,
-                  )
-                : Icon(
-                    Icons.settings,
-                  ), // icon is 48px widget.
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-          ),
-        ],
-      ),
-      drawer: NavDrawer(),
-      body: LoadingScreen(
-          child: StreamBuilder(
-            stream: Firestore.instance
-                .collection('schools')
-                .document(schoolId)
-                .snapshots(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    semanticsLabel: "Loading",
-                  ),
-                );
-              }
-              var doc = snapshot.data;
-
-              switch (doc["schoolAlertState"]) {
-                case "intruder":
-                  _currentCodeImg = Icon(LineAwesomeIcons.exclamation_triangle,
-                      color: (Theme.of(context).brightness == Brightness.dark)
-                          ? Colors.purple
-                          : Color(0XFFd05ce3),
-                      size: 120);
-                  break;
-                case "red":
-                  _currentCodeImg = Icon(LineAwesomeIcons.times_circle_o,
-                      color: Colors.red, size: 120);
-                  break;
-                case "yellow":
-                  _currentCodeImg = Icon(LineAwesomeIcons.minus_circle,
-                      color: Color(0xFFffc107), size: 120);
-                  break;
-                case "blue":
-                  _currentCodeImg = Icon(LineAwesomeIcons.plus_circle,
-                      color: Colors.blue, size: 120);
-                  break;
-                default:
-                  _currentCodeImg = Icon(
-                    LineAwesomeIcons.check_circle,
-                    color: Colors.green,
-                    size: 120,
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 5.0,
+          title: Text('HCBE Alerts'),
+          actions: <Widget>[
+            IconButton(
+              icon: Platform.isIOS
+                  ? Icon(
+                      CupertinoIcons.settings,
+                    )
+                  : Icon(
+                      Icons.settings,
+                    ), // icon is 48px widget.
+              onPressed: () {
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+          ],
+        ),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: LoadingScreen(
+            child: StreamBuilder(
+              stream: Firestore.instance
+                  .collection('schools')
+                  .document(schoolId)
+                  .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      semanticsLabel: "Loading",
+                    ),
                   );
-              }
+                }
+                var doc = snapshot.data;
 
-              switch (doc["schoolAlertState"]) {
-                case "red":
-                  _currentCode = "Code Red";
-                  break;
-                case "blue":
-                  _currentCode = "Code Blue";
-                  break;
-                case "intruder":
-                  _currentCode = "Active Intruder";
-                  break;
-                case "yellow":
-                  _currentCode = "Code Yellow";
-                  break;
-                default:
-                  _currentCode = "Code Green";
-              }
-              _currentSchoolName = doc["name"];
+                switch (doc["schoolAlertState"]) {
+                  case "intruder":
+                    _currentCodeImg = Icon(
+                        LineAwesomeIcons.exclamation_triangle,
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.purple
+                            : Color(0XFFd05ce3),
+                        size: 120);
+                    break;
+                  case "red":
+                    _currentCodeImg = Icon(LineAwesomeIcons.times_circle_o,
+                        color: Colors.red, size: 120);
+                    break;
+                  case "yellow":
+                    _currentCodeImg = Icon(LineAwesomeIcons.minus_circle,
+                        color: Color(0xFFffc107), size: 120);
+                    break;
+                  case "blue":
+                    _currentCodeImg = Icon(LineAwesomeIcons.plus_circle,
+                        color: Colors.blue, size: 120);
+                    break;
+                  default:
+                    _currentCodeImg = Icon(
+                      LineAwesomeIcons.check_circle,
+                      color: Colors.green,
+                      size: 120,
+                    );
+                }
 
-              Widget _codeProcedures;
+                switch (doc["schoolAlertState"]) {
+                  case "red":
+                    _currentCode = "Code Red";
+                    break;
+                  case "blue":
+                    _currentCode = "Code Blue";
+                    break;
+                  case "intruder":
+                    _currentCode = "Active Intruder";
+                    break;
+                  case "yellow":
+                    _currentCode = "Code Yellow";
+                    break;
+                  default:
+                    _currentCode = "Code Green";
+                }
+                _currentSchoolName = doc["name"];
 
-              switch (doc["schoolAlertState"]) {
-                case "red":
-                  _codeProcedures = codeRedProcedures;
-                  break;
-                case "blue":
-                  _codeProcedures = codeBlueProcedures;
-                  break;
-                case "intruder":
-                  _codeProcedures = activeIntruderProcedures;
-                  break;
-                case "yellow":
-                  _codeProcedures = codeYellowProcedures;
-                  break;
-                default:
-                  _codeProcedures = codeGreenProcedures;
-              }
-              return ListView(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                children: <Widget>[
-                  Center(
-                    child: AutoSizeText(
-                      _currentSchoolName,
-                      style: Theme.of(context).textTheme.headline5.copyWith(
-                            fontSize: 22,
-                          ),
-                      minFontSize: 16,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: 12.0),
-                  Card(
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    ),
-                    margin: EdgeInsets.symmetric(vertical: 7, horizontal: 7),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: _currentCodeImg,
-                          ),
-                          Center(
-                            child: Text(
-                              "Currently active: " + _currentCode,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                Widget _codeProcedures;
+
+                switch (doc["schoolAlertState"]) {
+                  case "red":
+                    _codeProcedures = codeRedProcedures;
+                    break;
+                  case "blue":
+                    _codeProcedures = codeBlueProcedures;
+                    break;
+                  case "intruder":
+                    _codeProcedures = activeIntruderProcedures;
+                    break;
+                  case "yellow":
+                    _codeProcedures = codeYellowProcedures;
+                    break;
+                  default:
+                }
+                return ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  children: <Widget>[
+                    Center(
+                      child: AutoSizeText(
+                        _currentSchoolName,
+                        style: Theme.of(context).textTheme.headline5.copyWith(
+                              fontSize: 22,
                             ),
-                          ),
-                        ],
+                        minFontSize: 16,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  ),
-                  (!doc["schoolAlertActive"])
-                      ? GridView.count(
-                          physics: ScrollPhysics(),
-                          shrinkWrap: true,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          crossAxisCount: 2,
-                          childAspectRatio: 4 / 3,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 30, horizontal: 7),
-                          children: <Widget>[
-                            activeIntruder,
-                            codeRed,
-                            codeYellow,
-                            codeBlue,
+                    SizedBox(height: 12.0),
+                    Card(
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                      margin: EdgeInsets.symmetric(vertical: 7, horizontal: 7),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: _currentCodeImg,
+                            ),
+                            Center(
+                              child: Text(
+                                "Currently active: " + _currentCode,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ],
-                        )
-                      : Column(
-                          children: <Widget>[
-                            SizedBox(width: 30),
-                            Card(
-                              child: TextField(
-                                enableSuggestions: true,
-                                maxLines: null,
-                                decoration: InputDecoration(
-                                  labelText: '',
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.send),
-                                    onPressed: () {
-                                      // send alert message update to firebase and display flushbar with "message sent" message
-                                    },
+                        ),
+                      ),
+                    ),
+                    (!doc["schoolAlertActive"])
+                        ? GridView.count(
+                            physics: ScrollPhysics(),
+                            shrinkWrap: true,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            crossAxisCount: 2,
+                            childAspectRatio: 4 / 3,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 30, horizontal: 7),
+                            children: <Widget>[
+                              activeIntruder,
+                              codeRed,
+                              codeYellow,
+                              codeBlue,
+                            ],
+                          )
+                        : Column(
+                            children: <Widget>[
+                              SizedBox(width: 30),
+                              Card(
+                                elevation: 5,
+                                child: Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: TextField(
+                                    controller: _alertMessage,
+                                    focusNode: _aMessage,
+                                    enableSuggestions: true,
+                                    maxLines: null,
+                                    decoration: InputDecoration(
+                                      labelText: '',
+                                      suffixIcon: IconButton(
+                                        icon: Icon(Icons.send),
+                                        onPressed: () {
+                                          _aMessage.unfocus();
+                                          //TODO might prompt an alert before sending message
+                                          // send alert message update to firebase and display flushbar with "message sent" message
+                                          if (_alertMessage.text != "") {
+                                            Alerts.updateAlertMessages(
+                                              _alertMessage.text,
+                                              doc["curAlertId"],
+                                              userId,
+                                            );
+                                            bar("Message sent", 2, context);
+                                          }
+                                        },
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Card(
-                              elevation: 4,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    _currentCode + " Quick Reference",
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
+                              Card(
+                                elevation: 4,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 6,
                                   ),
-                                  _codeProcedures,
-                                ],
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _currentCode + " Quick Reference",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                      ),
+                                      _codeProcedures,
+                                    ],
+                                  ),
+                                ),
                               ),
-                            )
-                          ],
-                        ),
-                ],
-              );
-            },
+                            ],
+                          ),
+                  ],
+                );
+              },
+            ),
+            inAsyncCall: _loadingVisible,
           ),
-          inAsyncCall: _loadingVisible),
-    );
+        ));
   }
 }
