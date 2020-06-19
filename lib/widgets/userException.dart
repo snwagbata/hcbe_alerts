@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class UserException implements Exception {
   /// Creates a [PlatformException] with the specified error [code] and optional

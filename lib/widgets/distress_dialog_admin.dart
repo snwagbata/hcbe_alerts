@@ -15,6 +15,9 @@ abstract class PlatformWidget extends StatelessWidget {
   }
 }
 
+//TODO: V2
+//This alert dialog will provide the option mark alerts as drills
+
 class DistressAlertAdminDialog extends PlatformWidget {
   DistressAlertAdminDialog({
     @required this.title,

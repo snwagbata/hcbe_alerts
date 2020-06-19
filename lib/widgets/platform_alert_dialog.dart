@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class PlatformWidget extends StatelessWidget {
-
   Widget buildCupertinoWidget(BuildContext context);
   Widget buildMaterialWidget(BuildContext context);
 
@@ -15,7 +14,6 @@ abstract class PlatformWidget extends StatelessWidget {
     return buildMaterialWidget(context);
   }
 }
-
 
 class PlatformAlertDialog extends PlatformWidget {
   PlatformAlertDialog({
