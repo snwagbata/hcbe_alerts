@@ -65,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
           _signOut(context);
         }
       }
+
       //TODO use shared preferences to store values
       Future<void> _changeTheme() async {
         var plaformText = await _getThemeTextBasedOnVersion();

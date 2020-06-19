@@ -27,7 +27,7 @@ class _DistrictAdminPageState extends State<DistrictAdminPage> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 5.0,
-        // title: Text('HCBE Alerts'),
+        title: Text('HCBE Alerts'),
         actions: <Widget>[
           IconButton(
             icon: Platform.isIOS

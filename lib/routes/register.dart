@@ -22,10 +22,10 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _name = new TextEditingController();
-  final TextEditingController _email = new TextEditingController();
-  final TextEditingController _password = new TextEditingController();
-  final TextEditingController _school = new TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _school = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();

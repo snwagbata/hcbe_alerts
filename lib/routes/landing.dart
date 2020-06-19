@@ -45,8 +45,7 @@ class _LandingPageState extends State<LandingPage> {
               borderSide: BorderSide(
                 color: Colors.white, //Color of the border
                 style: BorderStyle.solid, //Style of the border
-                width: ScreenUtil()
-                    .setWidth(0.8), //width of the border
+                width: ScreenUtil().setWidth(0.8), //width of the border
               ),
               highlightedBorderColor: Colors.white,
               onPressed: () => pushPage(context, RegisterPage()),

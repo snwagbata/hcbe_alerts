@@ -33,7 +33,7 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
       final bool codeGreen = await DistressAlertAdminDialog(
         title: "Code Green",
         cancelActionText: 'Cancel',
-        defaultActionText: 'Initiate alert',
+        defaultActionText: 'Go Green',
         schoolId: schoolId,
         alert: "green",
       ).show(context);
@@ -111,7 +111,7 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
-        elevation: 15,
+        elevation: 5,
         onPressed: () {
           _confirmCodeGreen(context, alertId);
         },
@@ -270,7 +270,7 @@ class _SchoolAdminPageState extends State<SchoolAdminPage> {
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
                                         crossAxisCount: 2,
-                                        childAspectRatio: 4/3,
+                                        childAspectRatio: 4 / 3,
                                         padding: EdgeInsets.symmetric(
                                             vertical: 7, horizontal: 7),
                                         children: <Widget>[
