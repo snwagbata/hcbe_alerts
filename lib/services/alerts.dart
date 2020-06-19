@@ -17,14 +17,6 @@ class Alerts {
         .updateData({"schoolAlertState": alertType, "schoolAlertActive": true});
     // get location and other prerequisites needed for the Distress object
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String _alertMessage;
-    if (prefs.getString('alertMessage') != null) {
-      _alertMessage = prefs.getString('alertMessage');
-    } else {
-      _alertMessage = "";
-    }
-
     Distress sendToDB = Distress(
       active: true,
       triggeredBy: userId,
@@ -32,7 +24,6 @@ class Alerts {
       distressType: alertType,
       schoolId: schoolId,
       timeTriggered: new DateTime.now(),
-      message: _alertMessage,
     );
     Firestore.instance.collection("alerts").add(sendToDB.toJson()).then(
       (docRef) async {
@@ -69,8 +60,6 @@ class Alerts {
         );
       },
     );
-
-    await prefs.setString('alertMessage', "");
   }
 
   /// Get location, return null if access denied
@@ -86,9 +75,15 @@ class Alerts {
     return _curLoc;
   }
 
-  /// Updates current active alert with message. Only works when current school alert is not `green`
+  /// Updates current active alert with message.
+  /// Intended to only work when school alert is not `green`
   ///
-  static void updateAlertMessages(String message, String alertId) {}
+  static void updateAlertMessages(
+      String message, String alertId, String userId) async {
+    Firestore.instance.document("alerts/$alertId").updateData(
+      {},
+    );
+  }
 
   ///
   ///
