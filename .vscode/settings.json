@@ -1,3 +1,7 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "dart.openDevTools": "flutter",
+    "dart.devToolsReuseWindows": true,
+    "dart.devToolsTheme": "dark",
+    "git.ignoreLimitWarning": true,
 }
