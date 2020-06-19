@@ -66,11 +66,10 @@ class Auth {
     final user = (await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password))
         .user;
-        if(user.isEmailVerified)
-        {
-    return user.uid;
-        }
-        throw UserException(code: "UNVERIFIED_EMAIL");
+    if (user.isEmailVerified) {
+      return user.uid;
+    }
+    throw UserException(code: "UNVERIFIED_EMAIL");
   }
 
   static Future<User> getUserFirestore(String userId) async {
@@ -184,132 +183,3 @@ class Auth {
     }
   }
 }
-/*
-@immutable
-class User {
-  const User({
-    @required this.uid,
-    this.email,
-    this.displayName,
-  });
-
-  final String uid;
-  final String email;
-  final String displayName;
-}
-
-class AuthService with ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _firestore = Firestore.instance;
-
-  User _userFromFirebase(FirebaseUser user) {
-    if (user == null) {
-      return null;
-    }
-    return User(
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-    );
-  }
-
-  Stream<User> get onAuthStateChanged {
-    return _auth.onAuthStateChanged.map(_userFromFirebase);
-  }
-
-  Future<String> createUser(String email, String password, String displayName,
-      String school, BuildContext context) async {
-    final user = (await _auth.createUserWithEmailAndPassword(
-            email: email, password: password))
-        .user;
-
-    UserUpdateInfo info = UserUpdateInfo();
-    info.displayName = displayName;
-    user.updateProfile(info);
-
-    _firestore.collection('users').document(user.uid).setData({
-      'name': user.displayName,
-      'uid': user.uid,
-      'email': user.email,
-      'school': school,
-      'schoolAdmin': false,
-      'districtAdmin': false,
-    });
-
-    return user.uid;
-  }
-
-  Future<dynamic> signIn(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
-  }
-  
-  Future<void> sendPasswordResetEmail(String email) async {
-    await _auth.sendPasswordResetEmail(email: email);
-  }
-
-  Future<User> currentUser() async {
-<<<<<<< HEAD
-    final FirebaseUser user = await _auth.currentUser();
-=======
-    final FirebaseUser user = await _firebaseAuth.currentUser();
->>>>>>> 3d1bcdcb95bbf234a4b5e098c788651ea3f63136
-    return _userFromFirebase(user);
-  }
-
-  Future logout() async {
-    var result = FirebaseAuth.instance.signOut();
-    notifyListeners();
-    return result;
-  }
-}
-
-/**
- * import 'package:flutter/widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
-
-class UserRepository with ChangeNotifier {
-  FirebaseAuth _auth;
-  FirebaseUser _user;
-  Status _status = Status.Uninitialized;
-
-  UserRepository.instance() : _auth = FirebaseAuth.instance {
-    _auth.onAuthStateChanged.listen(_onAuthStateChanged);
-  }
-
-  Status get status => _status;
-  FirebaseUser get user => _user;
-
-  Future<bool> signIn(String email, String password) async {
-    try {
-      _status = Status.Authenticating;
-      notifyListeners();
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
-    } catch (e) {
-      _status = Status.Unauthenticated;
-      notifyListeners();
-      return false;
-    }
-  }
-
-  Future signOut() async {
-    _auth.signOut();
-    _status = Status.Unauthenticated;
-    notifyListeners();
-    return Future.delayed(Duration.zero);
-  }
-
-  Future<void> _onAuthStateChanged(FirebaseUser firebaseUser) async {
-    if (firebaseUser == null) {
-      _status = Status.Unauthenticated;
-    } else {
-      _user = firebaseUser;
-      _status = Status.Authenticated;
-    }
-    notifyListeners();
-  }
-}
- */
-*/

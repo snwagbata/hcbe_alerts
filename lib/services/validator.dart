@@ -1,8 +1,7 @@
-
-
 class Validator {
   static String validateEmail(String value) {
-    Pattern pattern = r'^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(hcbe)\.net$';
+    Pattern pattern =
+        r'^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(hcbe)\.net$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return 'Please enter a valid HCBE email address.';
@@ -27,6 +26,7 @@ class Validator {
     else
       return null;
   }
+
 //check if school code exists before procedding with sign up
   static String validateSchool(String value) {
     Pattern pattern = r'^.{4,}$';

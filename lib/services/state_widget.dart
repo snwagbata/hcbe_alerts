@@ -135,10 +135,11 @@ class _StateWidgetState extends State<StateWidget> {
     FirebaseMessaging().requestNotificationPermissions(
         const IosNotificationSettings(
             sound: true, badge: true, alert: true, provisional: true));
-    FirebaseMessaging().onIosSettingsRegistered
+    FirebaseMessaging()
+        .onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
-       FirebaseMessaging().subscribeToTopic(schoolId);
+      FirebaseMessaging().subscribeToTopic(schoolId);
     });
   }
 
