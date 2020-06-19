@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -7,49 +9,39 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 /// display of alert location to admins
 /// DISCONTINUED: 4/3/2020
 /// Revisit: 10/7/2020
-class MapView extends StatefulWidget {
-  final double longitude;
-  final double latitude;
-
-  const MapView({this.latitude, this.longitude});
+class Map extends StatefulWidget {
+  Map({Key key}) : super(key: key);
 
   @override
-  _MapViewState createState() => _MapViewState();
+  _MapState createState() => _MapState();
 }
 
-class _MapViewState extends State<MapView> {
-  GoogleMapController _mapController;
-
-  void _onMapCreated(GoogleMapController controller) async{
-    setState(() {
-      _mapController = controller;
-    });   
-    moveToPosition();
-  }
-
-  void moveToPosition() {
-    _mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(widget.latitude, widget.longitude), zoom: 14),
-      ),
-    );
-  }
+class _MapState extends State<Map> {
+  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
 
   @override
   Widget build(BuildContext context) {
+    Widget map = GoogleMap(
+      mapToolbarEnabled: false,
+      zoomControlsEnabled: false,
+      mapType: MapType.normal,
+      myLocationButtonEnabled: false,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(-7.122802, -34.858036),
+        zoom: 15.5,
+      ),
+      onMapCreated: (GoogleMapController controller) async {
+        mapController = controller;
+        _controller.complete(controller);
+      },
+    );
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 5.0,
       ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: const LatLng(0, 0),
-          zoom: 11.0,
-        ),
-      ),
+      body: map,
     );
   }
 }
