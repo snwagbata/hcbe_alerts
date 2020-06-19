@@ -62,10 +62,10 @@ class AlertCard extends StatelessWidget {
                       children: <Widget>[
                         AlertDetailChip(Icons.event,
                             "Activated: ${_getFormattedDate(alertDetails.timeTriggered.toDate())}"),
-                         !alertDetails.active
-                          ? AlertDetailChip(Icons.event_available,
-                              'Resolved: ${_getFormattedDate(alertDetails.timeResolved.toDate())}')
-                          : Container(height: 0, width: 0),
+                        !alertDetails.active
+                            ? AlertDetailChip(Icons.event_available,
+                                'Resolved: ${_getFormattedDate(alertDetails.timeResolved.toDate())}')
+                            : Container(height: 0, width: 0),
                       ],
                     )
                   ],
