@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 
 class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
+  static const _platform =
+      const MethodChannel('safekul.healersoft.com/distress');
 
   Future initialise() async {
     if (Platform.isIOS) {
@@ -15,7 +18,13 @@ class PushNotificationService {
 
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
+        final code = message['notification']['title'];
+        final alertMessage = message['notification']['body'];
+        _platform.invokeMethod('distress', <String, dynamic>{
+          'code': code,
+          'message': alertMessage,
+        });
+        print("onMessage: $code");
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
