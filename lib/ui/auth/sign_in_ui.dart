@@ -92,7 +92,6 @@ class _SignInUIState extends State<SignInUI> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text('SIGN IN'),
-        centerTitle: true,
         elevation: 5.0,
       ),
       body: LoadingScreen(
@@ -149,11 +148,11 @@ class _SignInUIState extends State<SignInUI> {
           _loading = true;
         });
         AuthService _auth = AuthService();
-        
-        _auth.signInWithEmailAndPassword(email, password).then(
-            (user) => _auth.getUserFirestore(user.uid).then(
-                (value) => PushNotificationService()
-                    .subscribeToNotification(value.school)));
+
+        _auth.signInWithEmailAndPassword(email, password).then((user) => _auth
+            .getUserFirestore(user.uid)
+            .then((value) => PushNotificationService()
+                .subscribeToNotification(value.school)));
       } catch (e) {
         setState(() {
           _loading = false;

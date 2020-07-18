@@ -159,7 +159,6 @@ class _SignUpUIState extends State<SignUpUI> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        centerTitle: true,
         elevation: 5.0,
         title: Text('SIGN UP'),
       ),
