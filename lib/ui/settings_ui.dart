@@ -111,6 +111,7 @@ class _SettingsUIState extends State<SettingsUI> {
       ),
       body: SafeArea(
         child: SettingsList(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           sections: [
             /*
               SettingsSection(
@@ -203,9 +204,12 @@ class _SettingsUIState extends State<SettingsUI> {
               title: 'Misc',
               tiles: [
                 SettingsTile(
-                    title: 'Terms of Service',
-                    leading: Icon(Icons.description,
-                        color: Theme.of(context).iconTheme.color)),
+                  title: 'Terms of Service',
+                  leading: Icon(Icons.description,
+                      color: Theme.of(context).iconTheme.color),
+                  onTap:
+                      () {}, // use url_luancher package to launch url to TOS os safeskul website
+                ),
                 SettingsTile(
                   title: 'About HCBE Alerts',
                   leading: Icon(Icons.info_outline,
